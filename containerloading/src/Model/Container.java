@@ -81,7 +81,7 @@ public class Container {
 
             while(true)
             {
-                if(BottomOverlap(bx.volume[0], bx.volume[1], pos))
+                if(BottomOverlap(bx.relativeDimensions[0], bx.relativeDimensions[1], pos))
                 {
                     lowerRef = pos.z;
                     currentRef = (lowerRef + upperRef) / 2;
@@ -95,16 +95,16 @@ public class Container {
                 }
 
                 if(upperRef - lowerRef == 1)
-                {                    
+                {
                     pos.z++;
-                    break;                    
+                    break;
                 }
                 else if(upperRef == lowerRef)
                 {
                     pos.z++;
                     break;
                 }
-            }           
+            }
         }
         catch(Exception ex)
         {
@@ -117,12 +117,12 @@ public class Container {
     public Vector3d getPosition(Box bx)
     {
         //min(x,y), max(z)
-        Vector3d pos = new Vector3d(0,0,this.z - bx.volume[2]);
+        Vector3d pos = new Vector3d(0,0,this.z - bx.relativeDimensions[2]);
 
         /*TODO
          *
-         * Create logic to find a position to the box. I suggest we use a 
-         * lefter/deeper aproach (min x,y) after what we can make the box 
+         * Create logic to find a position to the box. I suggest we use a
+         * lefter/deeper aproach (min x,y) after what we can make the box
          * fall to the lower z (min z).
          *
          * Ao invés de
@@ -142,27 +142,27 @@ public class Container {
     {
         try{
             //First checks if any container boundary is exceeded
-            if ((pos.x + bx.volume[0]) >= this.x) {
+            if ((pos.x + bx.relativeDimensions[0]) >= this.x) {
                 throw new Exception("fitsHere(Box bx, Vector3d _pos) - Porra, saiu fora do container!");
             }
-            if ((pos.y + bx.volume[1]) >= this.y) {
+            if ((pos.y + bx.relativeDimensions[1]) >= this.y) {
                 throw new Exception("fitsHere(Box bx, Vector3d _pos) - Porra, saiu fora do container!");
             }
-            if ((pos.z + bx.volume[2]) >= this.z) {
+            if ((pos.z + bx.relativeDimensions[2]) >= this.z) {
                 throw new Exception("fitsHere(Box bx, Vector3d _pos) - Porra, saiu fora do container!");
             }
 
-            if(BottomOverlap(bx.volume[0], bx.volume[0], pos))
+            if(BottomOverlap(bx.relativeDimensions[0], bx.relativeDimensions[0], pos))
                 return false;
-            
-            /*
-             * Brute force check
-            for(int i = pos.x; i < pos.x + bx.volume[0]; i++)
-                for(int j = pos.y; j < pos.y + bx.volume[1]; j++)
-                    for(int k = pos.z; k < pos.z + bx.volume[2]; k++)
+
+
+            //Brute force check
+            for(int i = pos.x; i < pos.x + bx.relativeDimensions[0]; i++)
+                for(int j = pos.y; j < pos.y + bx.relativeDimensions[1]; j++)
+                    for(int k = pos.z; k < pos.z + bx.relativeDimensions[2]; k++)
                         if(this.spMatrix[i][j][k])
                             return false;
-             */
+
         }
         catch (Exception ex)
         {
