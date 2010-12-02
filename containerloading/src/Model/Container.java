@@ -20,6 +20,7 @@ public class Container {
         this.y = _size.y;
         this.z = _size.z;
         spMatrix = new boolean[x][y][z];
+        //inicializa toda a matriz do container com 0 (container vazio)
         for (int i = 0; i < x; i++)
             for(int j = 0; j < y; j++)
                 for(int k = 0; k < z; k++)
@@ -35,7 +36,7 @@ public class Container {
     {}
 
     //Checks if the bottom of a box hits something
-    private boolean bottomOverlap(int x, int y, Vector3d _pos)
+    private boolean BottomOverlap(int x, int y, Vector3d _pos)
     {
         int xMax = _pos.x + x;
         int yMax = _pos.y + y;
@@ -80,7 +81,7 @@ public class Container {
 
             while(true)
             {
-                if(bottomOverlap(bx.volume[0], bx.volume[1], pos))
+                if(BottomOverlap(bx.volume[0], bx.volume[1], pos))
                 {
                     lowerRef = pos.z;
                     currentRef = (lowerRef + upperRef) / 2;
@@ -151,7 +152,7 @@ public class Container {
                 throw new Exception("fitsHere(Box bx, Vector3d _pos) - Porra, saiu fora do container!");
             }
 
-            if(bottomOverlap(bx.volume[0], bx.volume[0], pos))
+            if(BottomOverlap(bx.volume[0], bx.volume[0], pos))
                 return false;
             
             /*
