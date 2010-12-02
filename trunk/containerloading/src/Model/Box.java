@@ -14,9 +14,9 @@ public class Box {
     //Box dimensions
     public Vector3d sides;
     //se a caixa está dentro do container
-    public boolean IsInside;
+    public boolean isInside;
     //se a caixa está rotacionada
-    public boolean IsRotated;
+    public boolean isRotated;
     //Idicates if side can be placed horizontally
     public boolean xv,yv,zv;
     public int totalVol;
@@ -36,9 +36,9 @@ public class Box {
         //Default vertical orientation == z
         this.vSide = Orientation.z;
         //quando criada, a caixa esta com os sides originais
-        this.IsRotated = false;
+        this.isRotated = false;
         //quando criada, a caixa esta fora do container
-        this.IsInside = false;
+        this.isInside = false;
         //dimensoes relativas ao container
         this.relativeDimensions[0] = this.sides.x;
         this.relativeDimensions[1] = this.sides.y;
@@ -85,7 +85,7 @@ public class Box {
         return false;
     }
 
-    //Changes the volume[] values to reflects the box vertical orientation
+    //Changes the relativeDimensions[] values to reflects the box vertical orientation
     public void flip(Orientation or)
     {
         if (this.vSide == or)
@@ -117,4 +117,16 @@ public class Box {
             }
         }
     }
+
+    /*
+     * Rotates a box 90° around container z axis
+     */
+    public void rotate()
+    {
+        int aux = this.relativeDimensions[0];
+        this.relativeDimensions[0] = this.relativeDimensions[1];
+        this.relativeDimensions[1] = aux;
+        this.isRotated = !this.isRotated;
+    }
+
 }
