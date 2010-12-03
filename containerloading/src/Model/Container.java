@@ -176,10 +176,29 @@ public class Container {
     /**
      * Testa se uma caixa cabe dentro do container, em algum lugar.
      */
-    public boolean fitsIn(Box _box)
+    public Vector3d fitsIn(Box _box)
     {
-        //TODO
-        return true;
+        //Varre shuazenegeriamente procurando um lugar pra colocar a caixa.
+        for (int i= 0; i < this.x; i++) {
+            for (int j= 0; j < this.y; j++) {
+                for (int k= 0; k < this.z; k++) {
+                    //Se a caixa cabe naquela posicao retorna o
+                    //canto inferior da onde ela foi colocada.
+                    if(fitsHere(_box, new Vector3d(i, j, k)))
+                        return new Vector3d(i, j, k);
+                    else
+                    {
+                        //Se nao cabe, rotaciona ela e tenta de novo.
+                        _box.rotate();
+                        if(fitsHere(_box, new Vector3d(i, j, k)))
+                            return new Vector3d(i, j, k);
+                    }
+                }
+            }
+        }
+        // o possível problema dessa metodo é atualizar a caixa que rotacionada
+        //aqui dentro lá fora... (criar uma struct de vector + bool talvez..)
+        return null;
     }
     /**
      * Insere uma caixa dentro do container e retorna as coordenadas

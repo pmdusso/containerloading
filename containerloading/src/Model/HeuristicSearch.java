@@ -39,7 +39,7 @@ public class HeuristicSearch {
             tempBox = melhorCaixa(boxesOutside);
             if(!listaTabu.contains(tempBox))
             {
-                if (container.fitsIn(tempBox)) {
+                if (container.fitsIn(tempBox)!= null) {
                     tempBox.relativeCoordenates = container.insertBox(tempBox);
                     solucaoIntermediaria.add(tempBox);
                 } else {
