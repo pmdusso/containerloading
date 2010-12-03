@@ -13,12 +13,14 @@ public class Container {
     //The container is divided in 1cm side cubes.
     public boolean spMatrix[][][];
     private int x,y,z;
+    public int volume;
 
     public Container(Vector3d _size)
     {
         this.x = _size.x;
         this.y = _size.y;
         this.z = _size.z;
+        this.volume = _size.x * _size.y *_size.z;
         spMatrix = new boolean[x][y][z];
         //inicializa toda a matriz do container com 0 (container vazio)
         for (int i = 0; i < x; i++)
@@ -169,5 +171,22 @@ public class Container {
             System.out.println(ex.getMessage());
         }
         return true;
+    }
+
+    /**
+     * Testa se uma caixa cabe dentro do container, em algum lugar.
+     */
+    public boolean fitsIn(Box _box)
+    {
+        //TODO
+        return true;
+    }
+    /**
+     * Insere uma caixa dentro do container e retorna as coordenadas
+     * relativas ao container de onde a caixa parou.
+     */
+    public Vector3d insertBox(Box _box)
+    {
+        return new Vector3d(100, 100, 100);
     }
 }

@@ -19,7 +19,7 @@ public class Box {
     public boolean isRotated;
     //Idicates if side can be placed horizontally
     public boolean xv,yv,zv;
-    public int totalVol;
+    public int volume;
     //Reflects the sides os of the box according to it's orientation
     public int relativeDimensions[];
     public Vector3d relativeCoordenates;
@@ -48,7 +48,7 @@ public class Box {
         this.relativeCoordenates = new Vector3d(0, 0, 0);
 
         //volume da caixa
-        this.totalVol = this.sides.x * this.sides.y * this.sides.z;
+        this.volume = this.sides.x * this.sides.y * this.sides.z;
         //Set vertical orientation possibilities
         this.xv = _xv;
         this.yv = _yv;

@@ -35,4 +35,13 @@ public class BTabu{
             listaTabu.remove();
         return listaTabu.add(_box);
     }
+    public boolean contains(Box _box)
+    {
+        if(listaTabu.contains(_box)) return true; else return false;
+    }
+    public boolean clear()
+    {
+        listaTabu.clear();
+        return true;
+    }
 }
