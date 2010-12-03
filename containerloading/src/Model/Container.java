@@ -184,13 +184,13 @@ public class Container {
                 for (int k= 0; k < this.z; k++) {
                     //Se a caixa cabe naquela posicao retorna o
                     //canto inferior da onde ela foi colocada.
-                    if(fitsHere(_box, new Vector3d(i, j, k)))
+                    if(fitsHere(_box, FallBox(_box, new Vector3d(i, j, k))))
                         return new Vector3d(i, j, k);
                     else
                     {
                         //Se nao cabe, rotaciona ela e tenta de novo.
                         _box.rotate();
-                        if(fitsHere(_box, new Vector3d(i, j, k)))
+                        if(fitsHere(_box, FallBox(_box, new Vector3d(i, j, k))))
                             return new Vector3d(i, j, k);
                     }
                 }
