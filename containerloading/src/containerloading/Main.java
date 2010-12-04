@@ -37,9 +37,8 @@ public class Main {
     }
 
     private static void Testes() {
-
-        Container testContainer = new Container(new Vector3d(4, 4, 2));
-        Box testBox = new Box(new Vector3d(1, 1, 1), true, true, true);
+        Container testContainer = new Container(new Vector3d(10, 8, 5));
+        Box testBox = new Box(new Vector3d(6, 4, 3), true, true, true);
         Box tempBox;
         Vector3d lastBoxInserted = new Vector3d(0, 0, 0);
 
@@ -53,8 +52,8 @@ public class Main {
         }
 
         lastBoxInserted = new Vector3d(
-                tempBox.relativeCoordenates.x,
-                tempBox.relativeCoordenates.y + tempBox.relativeDimensions[1],
+                tempBox.relativeCoordenates.x + tempBox.relativeDimensions.x,
+                tempBox.relativeCoordenates.y,
                 tempBox.relativeCoordenates.z);
         //insere segunda caixa
         tempBox = testContainer.fitsIn(testBox, lastBoxInserted);
@@ -66,8 +65,8 @@ public class Main {
         }
 
         lastBoxInserted = new Vector3d(
-                tempBox.relativeCoordenates.x,
-                tempBox.relativeCoordenates.y + tempBox.relativeDimensions[1],
+                tempBox.relativeCoordenates.x + tempBox.relativeDimensions.x,
+                tempBox.relativeCoordenates.y,
                 tempBox.relativeCoordenates.z);
         //insere a terceira caixa
         tempBox = testContainer.fitsIn(testBox, lastBoxInserted);
@@ -79,8 +78,8 @@ public class Main {
         }
 
         lastBoxInserted = new Vector3d(
-                tempBox.relativeCoordenates.x,
-                tempBox.relativeCoordenates.y + tempBox.relativeDimensions[1],
+                tempBox.relativeCoordenates.x + tempBox.relativeDimensions.x,
+                tempBox.relativeCoordenates.y,
                 tempBox.relativeCoordenates.z);
 
         DesenhaContainer(testContainer);
@@ -109,7 +108,8 @@ public class Main {
 
         try {
             HeuristicSearch hSearch = new HeuristicSearch(lstBoxesOutside, myContainer, 3);
-            hSearch.Resolve();
+            System.out.println("Volume total dentro do container: " + hSearch.Resolve());
+            DesenhaContainer(hSearch.getContainer());
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -132,14 +132,14 @@ public class Main {
             System.out.print("\n");
         }
         System.out.print("Desenhando comada X = 1\n");
-        for (int j = _ctn.getZ()-1; j >= 0; j--) {
+        for (int j = _ctn.getZ() - 1; j >= 0; j--) {
             for (int i = 0; i < _ctn.getY(); i++) {
                 System.out.print(_ctn.spMatrix[0][i][j] == true ? 1 : 0);
             }
             System.out.print("\n");
         }
         System.out.print("Desenhando comada X = 2\n");
-       for (int j = _ctn.getZ()-1; j >= 0; j--) {
+        for (int j = _ctn.getZ() - 1; j >= 0; j--) {
             for (int i = 0; i < _ctn.getY(); i++) {
                 System.out.print(_ctn.spMatrix[1][i][j] == true ? 1 : 0);
             }

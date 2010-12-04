@@ -15,10 +15,12 @@ public class HeuristicSearch {
 
     private List<Box> boxesInside = new ArrayList<Box>();
     private List<Box> boxesOutside = new ArrayList<Box>();
-
-    ;
     private Container container;
     private BTabu listaTabu;
+
+    public Container getContainer() {
+        return container;
+    }
 
     public HeuristicSearch(List<Box> _boxesOutside, Container _ctn, int _numberOfBoxTypes) {
         boxesOutside = _boxesOutside;
@@ -27,7 +29,7 @@ public class HeuristicSearch {
         container = _ctn;
     }
 
-    public void Resolve() {
+    public int Resolve() {
         Box bestBox;
         Box tempBox;
         Vector3d lastBoxInserted = new Vector3d(0, 0, 0);
@@ -51,8 +53,8 @@ public class HeuristicSearch {
                         //"otimizada": salva as coordenadas da ultima caixa inserida. Começa a busca
                         //por um lugar para as proximas caixas apartir dessa posicao.
                         lastBoxInserted = new Vector3d(
-                                tempBox.relativeCoordenates.x,
-                                tempBox.relativeCoordenates.y + tempBox.relativeDimensions[1],
+                                tempBox.relativeCoordenates.x + tempBox.relativeDimensions.x,
+                                tempBox.relativeCoordenates.y ,
                                 tempBox.relativeCoordenates.z);
                         //aqui, caso a caixa caiba no container, ela já tem as coordenadas
                         //de onde deve ficar.
@@ -77,8 +79,9 @@ public class HeuristicSearch {
             }
 
         } catch (Exception e) {
-            String error = e.getMessage();
+            System.out.print(e.getMessage());
         }
+        return valorFuncaoObjetivo;
     }
 
     /**
