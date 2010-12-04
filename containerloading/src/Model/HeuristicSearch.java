@@ -20,11 +20,11 @@ public class HeuristicSearch {
     private Container container;
     private BTabu listaTabu;
 
-    public HeuristicSearch(List<Box> _boxesOutside, int contLenght, int contWidth, int contHeight) {
+    public HeuristicSearch(List<Box> _boxesOutside, Container _ctn, int _numberOfBoxTypes) {
         boxesOutside = _boxesOutside;
         boxesInside.clear();
-        listaTabu.clear();
-        container = new Container(new Vector3d(contLenght, contWidth, contHeight));
+        listaTabu = new BTabu(_numberOfBoxTypes);
+        container = _ctn;
     }
 
     public void Resolve() {
@@ -35,43 +35,49 @@ public class HeuristicSearch {
         int valorFuncaoObjetivo = 0;
         int nroIteracoes = 0;
 
-        //critério de parada: volume dentro do container igual ao volume do container (sol. ótima)
-        //numero de iteracoes maximo.
-        while (volumeTotal(boxesInside) < container.volume && nroIteracoes <= 1000000) {
-            //seleciona uma caixa que ainda não está no container seguindo alguma euristica
-            //(nesse caso está sendo a de pegar a melhor caixa == caixa com maior volume.
-            bestBox = melhorCaixa(boxesOutside);
-            //se aquela caixa não está na lista tabu e ela cabe em algum lugar dentro do container
-            //a solução atual mais essa caixa é um vizinho válido da solução atual.
-            if (!listaTabu.contains(bestBox)) {
-                tempBox = container.fitsIn(bestBox,lastBoxInserted);
-                if (tempBox != null) {
-                    //"otimizada": salva as coordenadas da ultima caixa inserida. Começa a busca
-                    //por um lugar para as proximas caixas apartir dessa posicao.
-                    lastBoxInserted = new Vector3d(
-                            tempBox.relativeCoordenates.x,
-                            tempBox.relativeCoordenates.y + tempBox.relativeDimensions[1],
-                            tempBox.relativeCoordenates.z);
-                    //aqui, caso a caixa caiba no container, ela já tem as coordenadas
-                    //de onde deve ficar.
-                    solucaoIntermediaria.add(tempBox);
-                    container.insertBox(tempBox);
+        try {
+
+            //critério de parada: volume dentro do container igual ao volume do container (sol. ótima)
+            //numero de iteracoes maximo.
+            while (volumeTotal(boxesInside) < container.volume && nroIteracoes <= 1000000) {
+                //seleciona uma caixa que ainda não está no container seguindo alguma euristica
+                //(nesse caso está sendo a de pegar a melhor caixa == caixa com maior volume.
+                bestBox = melhorCaixa(boxesOutside);
+                //se aquela caixa não está na lista tabu e ela cabe em algum lugar dentro do container
+                //a solução atual mais essa caixa é um vizinho válido da solução atual.
+                if (!listaTabu.contains(bestBox)) {
+                    tempBox = container.fitsIn(bestBox, lastBoxInserted);
+                    if (tempBox != null) {
+                        //"otimizada": salva as coordenadas da ultima caixa inserida. Começa a busca
+                        //por um lugar para as proximas caixas apartir dessa posicao.
+                        lastBoxInserted = new Vector3d(
+                                tempBox.relativeCoordenates.x,
+                                tempBox.relativeCoordenates.y + tempBox.relativeDimensions[1],
+                                tempBox.relativeCoordenates.z);
+                        //aqui, caso a caixa caiba no container, ela já tem as coordenadas
+                        //de onde deve ficar.
+                        solucaoIntermediaria.add(tempBox);
+                        container.insertBox(tempBox);
+                    } else {
+                        //aquele "modelo" de caixa não cabe dentro do container no momento.
+                        listaTabu.addBox(bestBox);
+                        solucaoIntermediaria.remove(solucaoIntermediaria.size() - 1);
+                    }
                 } else {
-                    //aquele "modelo" de caixa não cabe dentro do container no momento.
-                    listaTabu.addBox(bestBox);
-                    solucaoIntermediaria.remove(solucaoIntermediaria.size()-1);
+                    //não faz nada,reinicia o laço para pegar outra caixa.
                 }
-            } else {
-                //não faz nada,reinicia o laço para pegar outra caixa.
-            }
-            int fo = funcaoObjetivo(boxesInside);
-            if (fo > valorFuncaoObjetivo) {
-                valorFuncaoObjetivo = fo;
-                boxesInside = solucaoIntermediaria;
+                int fo = funcaoObjetivo(boxesInside);
+                if (fo > valorFuncaoObjetivo) {
+                    valorFuncaoObjetivo = fo;
+                    boxesInside = solucaoIntermediaria;
+                }
+
+                nroIteracoes++;
+
             }
 
-            nroIteracoes++;
-
+        } catch (Exception e) {
+            String error = e.getMessage();
         }
     }
 

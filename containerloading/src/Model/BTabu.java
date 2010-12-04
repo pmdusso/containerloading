@@ -6,6 +6,7 @@
 package Model;
 
 import java.util.Queue;
+import java.util.concurrent.ArrayBlockingQueue;
 
 /**
  *
@@ -19,6 +20,7 @@ public class BTabu{
     public BTabu(int _numberOfBoxTypes)
     {
         listLimit = _numberOfBoxTypes;
+        listaTabu = new ArrayBlockingQueue<Box>(_numberOfBoxTypes);
     }
     public int listTabuLimit()
     {
