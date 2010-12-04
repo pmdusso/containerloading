@@ -54,24 +54,36 @@ public class HeuristicSearch {
                         //por um lugar para as proximas caixas apartir dessa posicao.
                         lastBoxInserted = new Vector3d(
                                 tempBox.relativeCoordenates.x + tempBox.relativeDimensions.x,
-                                tempBox.relativeCoordenates.y ,
+                                tempBox.relativeCoordenates.y,
                                 tempBox.relativeCoordenates.z);
                         //aqui, caso a caixa caiba no container, ela já tem as coordenadas
                         //de onde deve ficar.
+                        boxesOutside.remove(bestBox);
                         solucaoIntermediaria.add(tempBox);
                         container.insertBox(tempBox);
                     } else {
                         //aquele "modelo" de caixa não cabe dentro do container no momento.
-                        listaTabu.addBox(bestBox);
-                        solucaoIntermediaria.remove(solucaoIntermediaria.size() - 1);
+                        tempBox = listaTabu.addBox(bestBox);
+
+                        //devolve para a lista de caixas a serem adicionadas aquelas que
+                        //nao cabem mais na lista tabu.
+                        if (tempBox != null) {
+                            boxesOutside.add(tempBox);
+                        }
+
+//                        if (solucaoIntermediaria.size() > 0) {
+//                            solucaoIntermediaria.remove(solucaoIntermediaria.size() - 1);
+//                        }
+                    }
+
+                    int fo = funcaoObjetivo(solucaoIntermediaria);
+                    if (fo > valorFuncaoObjetivo) {
+                        valorFuncaoObjetivo = fo;
+                        boxesInside = solucaoIntermediaria;
                     }
                 } else {
                     //não faz nada,reinicia o laço para pegar outra caixa.
-                }
-                int fo = funcaoObjetivo(boxesInside);
-                if (fo > valorFuncaoObjetivo) {
-                    valorFuncaoObjetivo = fo;
-                    boxesInside = solucaoIntermediaria;
+                    boxesOutside.remove(bestBox);
                 }
 
                 nroIteracoes++;
@@ -121,5 +133,17 @@ public class HeuristicSearch {
             volumeTotal += box.volume;
         }
         return volumeTotal;
+    }
+
+    public int getNumeroDeCaixas(Vector3d vec) {
+        int volume = vec.x * vec.y * vec.z;
+        int quantidade = 0;
+
+        for (Box box : boxesInside) {
+            if (box.volume == volume) {
+                quantidade++;
+            }
+        }
+        return quantidade;
     }
 }

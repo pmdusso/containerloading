@@ -181,15 +181,15 @@ public class Container {
     public Box fitsIn(Box _box, Vector3d lastBoxInserted) {
 
         //Se a ultima caixa colocada "encheu" o eixo Y, passa para a proxima linha.
-        if (lastBoxInserted.y == this.y) {
+        if (lastBoxInserted.x == this.x) {
 
             lastBoxInserted = new Vector3d(
-                    lastBoxInserted.x + _box.relativeDimensions.x,
-                    lastBoxInserted.y - _box.relativeDimensions.y,
+                    0 ,
+                    lastBoxInserted.y + _box.relativeDimensions.y,
                     lastBoxInserted.z);
         }
         //Se a ultima caixa colocada "encheu" o eixo X, passa para a linha de cima.
-        if (lastBoxInserted.x == this.x) {
+        if (lastBoxInserted.y == this.y) {
             lastBoxInserted = new Vector3d(
                     0, //volta para o começo do container
                     0,
