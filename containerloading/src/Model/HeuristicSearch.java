@@ -46,6 +46,8 @@ public class HeuristicSearch {
             if (!listaTabu.contains(bestBox)) {
                 tempBox = container.fitsIn(bestBox,lastBoxInserted);
                 if (tempBox != null) {
+                    //"otimizada": salva as coordenadas da ultima caixa inserida. Começa a busca
+                    //por um lugar para as proximas caixas apartir dessa posicao.
                     lastBoxInserted = new Vector3d(
                             tempBox.relativeCoordenates.x,
                             tempBox.relativeCoordenates.y + tempBox.relativeDimensions[1],
@@ -53,9 +55,11 @@ public class HeuristicSearch {
                     //aqui, caso a caixa caiba no container, ela já tem as coordenadas
                     //de onde deve ficar.
                     solucaoIntermediaria.add(tempBox);
+                    container.insertBox(tempBox);
                 } else {
                     //aquele "modelo" de caixa não cabe dentro do container no momento.
                     listaTabu.addBox(bestBox);
+                    solucaoIntermediaria.remove(solucaoIntermediaria.size()-1);
                 }
             } else {
                 //não faz nada,reinicia o laço para pegar outra caixa.

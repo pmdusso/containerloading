@@ -170,16 +170,16 @@ public class Container {
         //Varre shuazenegeriamente procurando um lugar pra colocar a caixa.
         for (int i = lastBoxInserted.z; i < this.z; i++) {
             for (int j = lastBoxInserted.y; j < this.y; j++) {
-                for (int k = lastBoxInserted.z; k < this.x; k++) {
+                for (int k = lastBoxInserted.x; k < this.x; k++) {
                     //Se a caixa cabe naquela posicao, atualiza as coordenadas
                     //relativas ao container da caixa e retorna ela.
-                    if (fitsHere(_box, FallBox(_box, new Vector3d(k, j, i)))) {
+                    if (fitsHere(_box, new Vector3d(k, j, i))) {
                         _box.relativeCoordenates = new Vector3d(k, j, i);
                         return _box;
                     } else {
                         //Se nao cabe, rotaciona ela e tenta de novo.
                         _box.rotate();
-                        if (fitsHere(_box, FallBox(_box, new Vector3d(k, j, i)))) {
+                        if (fitsHere(_box, new Vector3d(k, j, i))) {
                             _box.relativeCoordenates = new Vector3d(k, j, i);
                             return _box;
                         }
@@ -191,8 +191,8 @@ public class Container {
     }
 
     /**
-     * Insere uma caixa dentro do container e retorna as coordenadas
-     * relativas ao container de onde a caixa parou.
+     * Insere uma caixa dentro do container utilizando as coordenadas da caixa
+     * relativa a posicao que ela deve ficar no container.
      */
     public boolean insertBox(Box bx) {
         for (int i = bx.relativeCoordenates.x; i < bx.relativeDimensions[0]; i++) {
