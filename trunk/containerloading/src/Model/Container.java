@@ -198,7 +198,15 @@ public class Container {
         for (int i = bx.relativeCoordenates.x; i < bx.relativeDimensions[0]; i++) {
             for (int j = bx.relativeCoordenates.y; j < bx.relativeDimensions[1]; j++) {
                 for (int k = bx.relativeCoordenates.z; k < bx.relativeDimensions[2]; k++) {
-                    this.spMatrix[i][j][k] = true;
+                    if(!this.spMatrix[i][j][k])
+                    {
+                        this.spMatrix[i][j][k] = true;
+                    }
+                    else
+                    {
+                        System.out.println("Posicao: (" + i + "," + j + "," + k + ") previamente ocupada.");
+                    }
+
                 }
 
             }
