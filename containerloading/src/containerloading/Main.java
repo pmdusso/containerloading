@@ -30,10 +30,10 @@ public class Main {
         Vector3d pos = new Vector3d(0, 0, 8);
         Vector3d endPos = myContainer.FallBox(myBox, pos);
         //System.out.println("Box placed successfully at (" + endPos.x + "," + endPos.y + "," + endPos.z + ")\n\n");
-        Testes();
+        //Testes();
 
 
-        //CasoTeste1();
+        CasoTeste1();
     }
 
     private static void Testes() {
@@ -88,7 +88,7 @@ public class Main {
 
     private static void CasoTeste1() {
 
-        Container myContainer = new Container(new Vector3d(100, 80, 50));
+        Container myContainer = new Container(new Vector3d( 587, 233, 220));
 
         Box type1 = new Box(new Vector3d(60, 40, 32), true, true, true);
         Box type2 = new Box(new Vector3d(98, 75, 55), true, true, true);
@@ -108,7 +108,11 @@ public class Main {
 
         try {
             HeuristicSearch hSearch = new HeuristicSearch(lstBoxesOutside, myContainer, 3);
-            System.out.println("Volume total dentro do container: " + hSearch.Resolve());
+            int volumeFinal = hSearch.Resolve();
+            System.out.println("Volume total dentro do container: " + volumeFinal);
+            System.out.println("Total de caixas 60x40x32: "+ hSearch.getNumeroDeCaixas(new Vector3d(1, 1, 1)));
+            System.out.println("Total de caixas 98x75x55: "+ hSearch.getNumeroDeCaixas(new Vector3d(2, 2, 2)));
+            System.out.println("Total de caixas 60x59x39: "+ hSearch.getNumeroDeCaixas(new Vector3d(3, 3, 3)));
             DesenhaContainer(hSearch.getContainer());
         } catch (Exception e) {
             System.out.println(e.getMessage());

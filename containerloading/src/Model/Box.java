@@ -45,7 +45,7 @@ public class Box {
         this.relativeCoordenates = new Vector3d(0, 0, 0);
 
         //volume da caixa
-        this.volume = this.sides.x * this.sides.y * this.sides.z;
+        this.volume = (this.sides.x * this.sides.y * this.sides.z);
         //Set vertical orientation possibilities
         this.xv = _xv;
         this.yv = _yv;
