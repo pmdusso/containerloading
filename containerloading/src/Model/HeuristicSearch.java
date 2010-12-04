@@ -30,7 +30,7 @@ public class HeuristicSearch {
     public void Resolve() {
         Box bestBox;
         Box tempBox;
-        Vector3d lastBoxInserted;
+        Vector3d lastBoxInserted = new Vector3d(0, 0, 0);
         List<Box> solucaoIntermediaria = new ArrayList<Box>();
         int valorFuncaoObjetivo = 0;
         int nroIteracoes = 0;
@@ -44,7 +44,7 @@ public class HeuristicSearch {
             //se aquela caixa não está na lista tabu e ela cabe em algum lugar dentro do container
             //a solução atual mais essa caixa é um vizinho válido da solução atual.
             if (!listaTabu.contains(bestBox)) {
-                tempBox = container.fitsIn(bestBox);
+                tempBox = container.fitsIn(bestBox,lastBoxInserted);
                 if (tempBox != null) {
                     lastBoxInserted = new Vector3d(
                             tempBox.relativeCoordenates.x,

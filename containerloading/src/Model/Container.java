@@ -194,7 +194,15 @@ public class Container {
      * Insere uma caixa dentro do container e retorna as coordenadas
      * relativas ao container de onde a caixa parou.
      */
-    public Vector3d insertBox(Box _box) {
-        return new Vector3d(100, 100, 100);
+    public boolean insertBox(Box bx) {
+        for (int i = bx.relativeCoordenates.x; i < bx.relativeDimensions[0]; i++) {
+            for (int j = bx.relativeCoordenates.y; j < bx.relativeDimensions[1]; j++) {
+                for (int k = bx.relativeCoordenates.z; k < bx.relativeDimensions[2]; k++) {
+                    this.spMatrix[i][j][k] = true;
+                }
+
+            }
+        }
+        return true;
     }
 }
