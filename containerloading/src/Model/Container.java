@@ -139,9 +139,9 @@ public class Container {
                 throw new Exception("fitsHere(Box bx, Vector3d _pos) - Porra, saiu fora do container!");
             }
 
-            if (BottomOverlap(bx.relativeDimensions[0], bx.relativeDimensions[0], pos)) {
+            /*if (BottomOverlap(bx.relativeDimensions[0], bx.relativeDimensions[0], pos)) {
                 return false;
-            }
+            }*/
 
 
             //Brute force check
