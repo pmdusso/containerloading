@@ -133,7 +133,7 @@ public class Main {
             System.out.println("Total de caixas 3x3x3: " + hSearch.getNumeroDeCaixas(new Vector3d(3, 3, 3)));
             DesenhaContainer(hSearch.getContainer());
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            System.out.println("<CasoTesteOtavio()>" + e.toString());
         }
     }
 
@@ -218,7 +218,7 @@ public class Main {
 
             DesenhaContainer(hSearch.getContainer());
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            System.out.println("<CasoTesteOtavio_2()>" + e.toString());
         }
 
     }
