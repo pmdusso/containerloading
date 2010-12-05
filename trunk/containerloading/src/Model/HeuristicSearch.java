@@ -22,10 +22,10 @@ public class HeuristicSearch {
         return container;
     }
 
-    public HeuristicSearch(List<Box> _boxesOutside, Container _ctn, int _numberOfBoxTypes) {
+    public HeuristicSearch(List<Box> _boxesOutside, Container _ctn, List<Box> _typeBoxes) {
         boxesOutside = _boxesOutside;
         boxesInside.clear();
-        listaTabu = new BTabu(_numberOfBoxTypes,_boxesOutside);
+        listaTabu = new BTabu(_typeBoxes);
         container = _ctn;
     }
 

@@ -17,17 +17,25 @@ public class BTabu {
     private int listLimit;
     private Queue<Box> listaTabu;
 
-    public BTabu(int _numberOfBoxTypes, List<Box> boxesOutside) {
-        listLimit = _numberOfBoxTypes;
-        listaTabu = new ArrayBlockingQueue<Box>(_numberOfBoxTypes);
+    public BTabu(List<Box> _typeBoxes) {
+        listLimit = CalculaTamanhoListaTabu(_typeBoxes);
+        listaTabu = new ArrayBlockingQueue<Box>(listLimit);
     }
 
-    public int listTabuLimit() {
-        return listLimit;
-    }
-
-    public int listTabuNumberOfBoxes() {
-        return listaTabu.size();
+    private Integer CalculaTamanhoListaTabu(List<Box> _typeBoxes) {
+        int tabuSize = 0;
+        for (Box box : _typeBoxes) {
+            if (box.xv) {
+                tabuSize += 2;
+            }
+            if (box.yv) {
+                tabuSize += 2;
+            }
+            if (box.zv) {
+                tabuSize += 2;
+            }
+        }
+        return tabuSize;
     }
 
     public Box addBox(Box _box) {
@@ -65,5 +73,13 @@ public class BTabu {
     public boolean clear() {
         listaTabu.clear();
         return true;
+    }
+
+    public int listTabuLimit() {
+        return listLimit;
+    }
+
+    public int listTabuNumberOfBoxes() {
+        return listaTabu.size();
     }
 }
