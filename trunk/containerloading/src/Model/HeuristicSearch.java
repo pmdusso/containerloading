@@ -103,7 +103,7 @@ public class HeuristicSearch {
         int volumeTotal = 0;
 
         for (Box box : _lstBoxes) {
-            volumeTotal += box.volume;
+            volumeTotal += box.getVolume();
         }
         return volumeTotal;
     }
@@ -112,10 +112,10 @@ public class HeuristicSearch {
      * Retorna a melhor (maior volume) caixa da lista recebida
      */
     public Box melhorCaixa(List<Box> _lstBoxes) {
-        Box bestBox = new Box(new Vector3d(1, 1, 1), true, true, true);
+        Box bestBox = new Box(new Vector3d(1, 1, 1), true, true, true,0);
 
         for (Box box : _lstBoxes) {
-            if (box.volume > bestBox.volume) {
+            if (box.getVolume() > bestBox.getVolume()) {
                 bestBox = box;
             }
         }
@@ -130,7 +130,7 @@ public class HeuristicSearch {
         int volumeTotal = 0;
 
         for (Box box : _lstBoxes) {
-            volumeTotal += box.volume;
+            volumeTotal += box.getVolume();
         }
         return volumeTotal;
     }
@@ -140,7 +140,7 @@ public class HeuristicSearch {
         int quantidade = 0;
 
         for (Box box : boxesInside) {
-            if (box.volume == volume) {
+            if (box.getVolume() == volume) {
                 quantidade++;
             }
         }
