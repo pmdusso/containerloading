@@ -25,7 +25,7 @@ public class HeuristicSearch {
     public HeuristicSearch(List<Box> _boxesOutside, Container _ctn, int _numberOfBoxTypes) {
         boxesOutside = _boxesOutside;
         boxesInside.clear();
-        listaTabu = new BTabu(_numberOfBoxTypes);
+        listaTabu = new BTabu(_numberOfBoxTypes,_boxesOutside);
         container = _ctn;
     }
 

@@ -5,6 +5,7 @@
 package containerloading;
 
 import Model.*;
+import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +30,7 @@ public class Main {
         myContainer.spMatrix[0][0][3] = true;
         myContainer.spMatrix[0][0][4] = true;
         //myContainer.spMatrix[0][0][1] = true;
-        Box myBox = new Box(new Vector3d(2, 2, 2), true, true, true,1);
+        Box myBox = new Box(new Vector3d(2, 2, 2), true, true, true, 1);
         Vector3d pos = new Vector3d(0, 0, 8);
         Vector3d endPos = myContainer.FallBox(myBox, pos);
         //System.out.println("Box placed successfully at (" + endPos.x + "," + endPos.y + "," + endPos.z + ")\n\n");
@@ -41,7 +42,7 @@ public class Main {
 
     private static void Testes() {
         Container testContainer = new Container(new Vector3d(10, 8, 5));
-        Box testBox = new Box(new Vector3d(6, 4, 3), true, true, true,1);
+        Box testBox = new Box(new Vector3d(6, 4, 3), true, true, true, 1);
         Box tempBox;
         Vector3d lastBoxInserted = new Vector3d(0, 0, 0);
 
@@ -89,6 +90,37 @@ public class Main {
 
     }
 
+    private static void CasoTesteOtavio() {
+
+        Container testContainer = new Container(new Vector3d(10, 10, 10));
+        Box testBox = new Box(new Vector3d(1, 1, 1), true, true, true, 1);
+        List<Box> testListBox = new ArrayList<Box>();
+
+        for (int i = 0; i < 1000; i++) {
+            testListBox.add(testBox);
+        }
+        testBox = new Box(new Vector3d(2, 2, 2), true, true, true, 2);
+        for (int i = 0; i < 1000; i++) {
+            testListBox.add(testBox);
+        }
+        testBox = new Box(new Vector3d(3, 3, 3), true, true, true, 3);
+        for (int i = 0; i < 1000; i++) {
+            testListBox.add(testBox);
+        }
+
+        try {
+            HeuristicSearch hSearch = new HeuristicSearch(testListBox, testContainer, 3);
+            System.out.println("Volume total dentro do container: " + hSearch.Resolve());
+            System.out.println("Total de caixas 1x1x1: " + hSearch.getNumeroDeCaixas(new Vector3d(60, 40, 32)));
+            System.out.println("Total de caixas 2x2x2: " + hSearch.getNumeroDeCaixas(new Vector3d(98, 75, 55)));
+            System.out.println("Total de caixas 3x3x3: " + hSearch.getNumeroDeCaixas(new Vector3d(60, 59, 39)));
+            DesenhaContainer(hSearch.getContainer());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+    }
+
     private static void CasoTeste1() {
 
         InputReader reader = new InputReader(FilesPath + "thpack1.txt");
@@ -101,9 +133,9 @@ public class Main {
         try {
             HeuristicSearch hSearch = new HeuristicSearch(lstBoxesOutside, myContainer, boxTypes);
             System.out.println("Volume total dentro do container: " + hSearch.Resolve());
-            System.out.println("Total de caixas 60x40x32: " + hSearch.getNumeroDeCaixas(new Vector3d(60,40,32)));
-            System.out.println("Total de caixas 98x75x55: " + hSearch.getNumeroDeCaixas(new Vector3d(98,75,55)));
-            System.out.println("Total de caixas 60x59x39: " + hSearch.getNumeroDeCaixas(new Vector3d(60,59,39)));
+            System.out.println("Total de caixas 60x40x32: " + hSearch.getNumeroDeCaixas(new Vector3d(60, 40, 32)));
+            System.out.println("Total de caixas 98x75x55: " + hSearch.getNumeroDeCaixas(new Vector3d(98, 75, 55)));
+            System.out.println("Total de caixas 60x59x39: " + hSearch.getNumeroDeCaixas(new Vector3d(60, 59, 39)));
             DesenhaContainer(hSearch.getContainer());
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -146,5 +178,3 @@ public class Main {
         }
     }
 }
-
-
