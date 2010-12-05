@@ -47,7 +47,7 @@ public class HeuristicSearch {
 
             //critério de parada: volume dentro do container igual ao volume do container (sol. ótima)
             //numero de iteracoes maximo.
-            while (volumeTotal(boxesInside) < container.volume && nroIteracoes <= 500000) {
+            while (volumeTotal(boxesInside) < container.getVolume() && nroIteracoes <= 500000) {
                 //seleciona uma caixa que ainda não está no container seguindo alguma euristica
                 //(nesse caso está sendo a de pegar a melhor caixa == caixa com maior volume.
                 bestBox = melhorCaixa(boxesOutside);
@@ -129,21 +129,30 @@ public class HeuristicSearch {
         }
         return -1;
     }
+
     /**
      * Retorna a melhor (maior volume) caixa da lista recebida
      */
     public Box melhorCaixa(List<Box> _lstBoxes) {
+        //Inicializa o bestbox como nulo
+        Box ret = null;
         if (_lstBoxes.size() > 0) {
+            //pega a primeira caixa da lista (pode ser tabu tb, mais isso será tratado mais abaixo) ***
             Box bestBox = _lstBoxes.get(0);
-
+            //Vai percorrendo a lista e, se achar uma caixa maior que a atual que não esteja na lista tabu,
+            //passa a utilizar esta nova caixa
             for (Box box : _lstBoxes) {
-                if (box.getVolume() > bestBox.getVolume()) {
+                if (box.getVolume() > bestBox.getVolume() && !listaTabu.contains(box)) {
                     bestBox = box;
                 }
             }
-            return _lstBoxes.remove(_lstBoxes.indexOf(bestBox));
+            //***No primeiro comando deste método, existe a possibilidade de se pegar uma caixa que é tabu.
+            //Se este for o caso, o IF abixo impede que uma caixa tabu seja retornada.
+            if (!listaTabu.contains(bestBox)) {
+                ret = _lstBoxes.remove(_lstBoxes.indexOf(bestBox));
+            }
         }
-        return null;
+        return ret;
     }
 
     /**
@@ -162,7 +171,7 @@ public class HeuristicSearch {
     }
 
     public int getNumeroDeCaixas(Vector3d vec) {
-        int volume = vec.x * vec.y * vec.z;
+        int volume = (vec.x * vec.y * vec.z);
         int quantidade = 0;
 
         for (Box box : boxesInside) {

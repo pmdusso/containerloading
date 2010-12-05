@@ -15,7 +15,8 @@ import java.util.List;
 public class Main {
 
     //files: thpack 1..7
-    private final static String FilesPath = "C:\\Ofiles\\";
+    private final static String FilesPathWindows = "C:\\Ofiles\\";
+    private final static String FilesPathLinux = "//home//otavio//temp//";
 
     /**
      * @param args the command line arguments
@@ -24,7 +25,7 @@ public class Main {
 
         //Testes();
         //Testes2();
-        CasoTesteOtavio();
+        //CasoTesteOtavio();
         //Testes2();
         CasoTesteOtavio_2();
     }
@@ -138,24 +139,42 @@ public class Main {
 
     private static void CasoTesteOtavio_2() {
 
-        InputReader reader = new InputReader("//home//otavio//temp//" + "br1.txt");
+        InputReader reader = new InputReader(FilesPathWindows + "br1.txt");
         reader.readInputBR(50);
 
         Container myContainer = reader.getContainer();
         List<Box> lstBoxesOutside = reader.getBoxes();
         List<Box> lstTypeBoxes = reader.getTypeBoxes();
-        int containervol = myContainer.getX() * myContainer.getY() * myContainer.getZ();
-        System.out.println("Container Volume: " + containervol);
+        System.out.println("Container Volume: " + myContainer.getVolume());
         System.out.println("Container: (" + myContainer.getX() + "," + myContainer.getY() + "," + myContainer.getZ() + ")");
         System.out.println("nº de caixas na lista: " + lstBoxesOutside.size());
         System.out.println("nº de tipos de caixas na lista: " + lstTypeBoxes.size());
+        System.out.println(
+                "Tipo: " + lstTypeBoxes.get(0).getBoxType() + " Tam: "
+                + lstTypeBoxes.get(0).relativeDimensions.x + " x "
+                + lstTypeBoxes.get(0).relativeDimensions.y + " x "
+                + lstTypeBoxes.get(0).relativeDimensions.z + " x "
+                + "Volume: " + lstTypeBoxes.get(0).getVolume());
 
+        System.out.println(
+                "Tipo: " + lstTypeBoxes.get(1).getBoxType() + " Tam: "
+                + lstTypeBoxes.get(1).relativeDimensions.x + " x "
+                + lstTypeBoxes.get(1).relativeDimensions.y + " x "
+                + lstTypeBoxes.get(1).relativeDimensions.z + " x "
+                + "Volume: " + lstTypeBoxes.get(1).getVolume());
+        System.out.println(
+                "Tipo: " + lstTypeBoxes.get(2).getBoxType() + " Tam: "
+                + lstTypeBoxes.get(2).relativeDimensions.x + " x "
+                + lstTypeBoxes.get(2).relativeDimensions.y + " x "
+                + lstTypeBoxes.get(2).relativeDimensions.z + " x "
+                + "Volume: " + lstTypeBoxes.get(2).getVolume());
+        System.out.println("Processando");
         try {
             HeuristicSearch hSearch = new HeuristicSearch(lstBoxesOutside, myContainer, lstTypeBoxes);
             System.out.println("Volume total dentro do container: " + hSearch.Resolve());
-            System.out.println("Total de caixas 20x20x20: " + hSearch.getNumeroDeCaixas(new Vector3d(20, 20, 20)));
-            System.out.println("Total de caixas 30x30x30: " + hSearch.getNumeroDeCaixas(new Vector3d(30, 30, 30)));
-            System.out.println("Total de caixas 40x40x40: " + hSearch.getNumeroDeCaixas(new Vector3d(40, 40, 40)));
+            System.out.println("Total de caixas 40, 32, 64: " + hSearch.getNumeroDeCaixas(new Vector3d(lstTypeBoxes.get(0).relativeDimensions.x, lstTypeBoxes.get(0).relativeDimensions.y, lstTypeBoxes.get(0).relativeDimensions.z)));
+            System.out.println("Total de caixas 75, 55, 40: " + hSearch.getNumeroDeCaixas(new Vector3d(lstTypeBoxes.get(1).relativeDimensions.x, lstTypeBoxes.get(1).relativeDimensions.y, lstTypeBoxes.get(1).relativeDimensions.z)));
+            System.out.println("Total de caixas 59, 39, 64: " + hSearch.getNumeroDeCaixas(new Vector3d(lstTypeBoxes.get(2).relativeDimensions.x, lstTypeBoxes.get(2).relativeDimensions.y, lstTypeBoxes.get(2).relativeDimensions.z)));
             if (hSearch.getNumeroDeCaixas(new Vector3d(1, 1, 1)) > 0) {
                 System.out.println("Total de caixas 1x1x1: " + hSearch.getNumeroDeCaixas(new Vector3d(1, 1, 1)));
             }
@@ -169,7 +188,7 @@ public class Main {
 
     private static void CasoTeste1() {
 
-        InputReader reader = new InputReader("//home//otavio//temp//" + "br1.txt");
+        InputReader reader = new InputReader(FilesPathWindows + "br1.txt");
         reader.readInput(50);
 
         Container myContainer = reader.getContainer();

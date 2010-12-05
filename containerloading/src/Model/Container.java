@@ -13,10 +13,14 @@ public class Container {
 
     public boolean spMatrix[][][];
     private int x, y, z;
-    public int volume;
+    private int volume;
 
     public int getX() {
         return this.x;
+    }
+
+    public int getVolume() {
+        return volume;
     }
     private static final Integer X = 0;
 
@@ -34,7 +38,7 @@ public class Container {
         this.x = _size.x;
         this.y = _size.y;
         this.z = _size.z;
-        this.volume = _size.x * _size.y * _size.z;
+        this.volume = (_size.x * _size.y * _size.z);
         spMatrix = new boolean[x][y][z];
         //inicializa toda a matriz do container com 0 (container vazio)
         for (int i = 0; i < this.x; i++) {
@@ -184,7 +188,7 @@ public class Container {
         if (lastBoxInserted.x == this.x) {
 
             lastBoxInserted = new Vector3d(
-                    0 ,
+                    0,
                     lastBoxInserted.y + _box.relativeDimensions.y,
                     lastBoxInserted.z);
         }
@@ -229,13 +233,36 @@ public class Container {
      * relativa a posicao que ela deve ficar no container.
      */
     public boolean insertBox(Box bx) {
-
         try {
             for (int i = bx.relativeCoordenates.x; i < bx.relativeCoordenates.x + bx.relativeDimensions.x; i++) {
                 for (int j = bx.relativeCoordenates.y; j < bx.relativeCoordenates.y + bx.relativeDimensions.y; j++) {
                     for (int k = bx.relativeCoordenates.z; k < bx.relativeCoordenates.z + bx.relativeDimensions.z; k++) {
                         if (!this.spMatrix[i][j][k]) {
                             this.spMatrix[i][j][k] = true;
+                        } else {
+                            System.out.println("Posicao: (" + i + "," + j + "," + k + ") previamente ocupada.");
+                            return false;
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
+        return true;
+    }
+    /**
+     * Remove uma caixa dentro do container utilizando as coordenadas da caixa
+     * relativa a posicao que ela ficava no container.
+     */
+    public boolean removeBox(Box bx) {
+        try {
+            for (int i = bx.relativeCoordenates.x; i < bx.relativeCoordenates.x + bx.relativeDimensions.x; i++) {
+                for (int j = bx.relativeCoordenates.y; j < bx.relativeCoordenates.y + bx.relativeDimensions.y; j++) {
+                    for (int k = bx.relativeCoordenates.z; k < bx.relativeCoordenates.z + bx.relativeDimensions.z; k++) {
+                        if (this.spMatrix[i][j][k]) {
+                            this.spMatrix[i][j][k] = false;
                         } else {
                             System.out.println("Posicao: (" + i + "," + j + "," + k + ") previamente ocupada.");
                             return false;
