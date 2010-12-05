@@ -68,7 +68,7 @@ public class Container {
                 }
             }
         } catch (Exception ex) {
-            System.out.println(ex.getMessage());
+            System.out.println("<BottomOverlap>" + ex.toString());
         }
 
         return false;
