@@ -36,6 +36,7 @@ public class GRASP {
 	Solution solution = new GraspSolution(container);
 
 	for (int i = 0; i < MAX_ITERACOES; i++) {
+	    System.out.println("Itreação corrente do grasp = " + i);
 	    container.clear();
 	    Solution initalSolution = greedyRandomized(ALPHA);
 
@@ -50,11 +51,16 @@ public class GRASP {
 
     private Solution localSearch(Solution solution) {
 	Solution bestSolution = solution;
-	List<Solution> neighbours = solution.getNeighbours();
-	for (Solution neighbour : neighbours) {
-	    System.out.println(String.format("LocaSearch: Melhor:%s Atual:%s", bestSolution.getValue(), neighbour.getValue()));
-	    if (neighbour.getValue() > bestSolution.getValue()) {
-		bestSolution = neighbour;
+	boolean hasChanged = true;
+	while (hasChanged) {
+	    hasChanged = false;
+	    List<Solution> neighbours = bestSolution.getNeighbours();
+	    for (Solution neighbour : neighbours) {
+		System.out.println(String.format("LocaSearch: Melhor:%s Atual:%s", bestSolution.getValue(), neighbour.getValue()));
+		if (neighbour.getValue() > bestSolution.getValue()) {
+		    bestSolution = neighbour;
+		    hasChanged = true;
+		}
 	    }
 	}
 
@@ -64,14 +70,16 @@ public class GRASP {
     private Solution greedyRandomized(Float alpha) {
 	Solution solution = new GraspSolution(new ArrayList<Box>(), new ArrayList<Box>(boxes), container);
 	List<Box> iteratableBoxList = new ArrayList<Box>(boxes);
+	Vector3d lastBoxInserted = new Vector3d(0, 0, 0);
 
 	while (!iteratableBoxList.isEmpty()) {
 	    List<Box> candidates = getCadidatesList(iteratableBoxList, alpha);
 	    Box cadidateBox = candidates.get(0);
-	    Box boxInContainer = container.fitsIn(cadidateBox);
+	    Box boxInContainer = container.fitsIn(cadidateBox, lastBoxInserted);
 	    if (boxInContainer != null) {
 		solution.getBoxes().add(boxInContainer);
 		container.insertBox(boxInContainer);
+		lastBoxInserted = boxInContainer.relativeCoordenates;
 	    }
 
 	    iteratableBoxList.remove(cadidateBox);

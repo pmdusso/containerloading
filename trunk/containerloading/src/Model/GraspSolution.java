@@ -48,7 +48,7 @@ public class GraspSolution implements Solution {
 	neighbours = new ArrayList<Solution>();
 	for (int i = 0; i < boxesInContainer.size() - 1; i++) {
 	    for (int j = 0; j < boxesOutside.size() - 1; j++) {
-		if (neighbours.size() < 100) {
+		if (neighbours.size() < 5) {
 		    if (!boxesInContainer.get(i).equals(boxesOutside.get(j))) {
 			List<Box> boxesIn = new ArrayList<Box>(boxesInContainer);
 			List<Box> boxesOut = new ArrayList<Box>(boxesOutside);
@@ -71,11 +71,14 @@ public class GraspSolution implements Solution {
 
     private Boolean isSolutionVaid(List<Box> solution) {
 
+	Vector3d lastPosition = new Vector3d(0, 0, 0);
 	for (Box box : solution) {
-	    if (container.fitsIn(box) == null)
+	    Box fitsIn = container.fitsIn(box, lastPosition);
+	    if (fitsIn == null)
 		return false;
 
-	    container.insertBox(box);
+	    container.insertBox(fitsIn);
+	    lastPosition = fitsIn.relativeCoordenates;
 	}
 
 	return true;
