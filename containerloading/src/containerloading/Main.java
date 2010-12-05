@@ -14,6 +14,9 @@ import java.util.List;
  */
 public class Main {
 
+    //files: thpack 1..7
+    private final static String FilesPath = "C:\\Ofiles\\";
+
     /**
      * @param args the command line arguments
      */
@@ -26,7 +29,7 @@ public class Main {
         myContainer.spMatrix[0][0][3] = true;
         myContainer.spMatrix[0][0][4] = true;
         //myContainer.spMatrix[0][0][1] = true;
-        Box myBox = new Box(new Vector3d(2, 2, 2), true, true, true);
+        Box myBox = new Box(new Vector3d(2, 2, 2), true, true, true,1);
         Vector3d pos = new Vector3d(0, 0, 8);
         Vector3d endPos = myContainer.FallBox(myBox, pos);
         //System.out.println("Box placed successfully at (" + endPos.x + "," + endPos.y + "," + endPos.z + ")\n\n");
@@ -38,7 +41,7 @@ public class Main {
 
     private static void Testes() {
         Container testContainer = new Container(new Vector3d(10, 8, 5));
-        Box testBox = new Box(new Vector3d(6, 4, 3), true, true, true);
+        Box testBox = new Box(new Vector3d(6, 4, 3), true, true, true,1);
         Box tempBox;
         Vector3d lastBoxInserted = new Vector3d(0, 0, 0);
 
@@ -88,31 +91,19 @@ public class Main {
 
     private static void CasoTeste1() {
 
-        Container myContainer = new Container(new Vector3d( 587, 233, 220));
+        InputReader reader = new InputReader(FilesPath + "thpack1.txt");
+        reader.readInput(50);
 
-        Box type1 = new Box(new Vector3d(60, 40, 32), true, true, true);
-        Box type2 = new Box(new Vector3d(98, 75, 55), true, true, true);
-        Box type3 = new Box(new Vector3d(60, 59, 39), true, true, true);
-
-        List<Box> lstBoxesOutside = new ArrayList<Box>();
-
-        for (int i = 0; i < 64; i++) {
-            lstBoxesOutside.add(type1);
-        }
-        for (int i = 0; i < 40; i++) {
-            lstBoxesOutside.add(type2);
-        }
-        for (int i = 0; i < 64; i++) {
-            lstBoxesOutside.add(type3);
-        }
+        Container myContainer = reader.getContainer();
+        List<Box> lstBoxesOutside = reader.getBoxes();
+        int boxTypes = reader.getBoxTypes();
 
         try {
-            HeuristicSearch hSearch = new HeuristicSearch(lstBoxesOutside, myContainer, 3);
-            int volumeFinal = hSearch.Resolve();
-            System.out.println("Volume total dentro do container: " + volumeFinal);
-            System.out.println("Total de caixas 60x40x32: "+ hSearch.getNumeroDeCaixas(new Vector3d(1, 1, 1)));
-            System.out.println("Total de caixas 98x75x55: "+ hSearch.getNumeroDeCaixas(new Vector3d(2, 2, 2)));
-            System.out.println("Total de caixas 60x59x39: "+ hSearch.getNumeroDeCaixas(new Vector3d(3, 3, 3)));
+            HeuristicSearch hSearch = new HeuristicSearch(lstBoxesOutside, myContainer, boxTypes);
+            System.out.println("Volume total dentro do container: " + hSearch.Resolve());
+            System.out.println("Total de caixas 60x40x32: " + hSearch.getNumeroDeCaixas(new Vector3d(60,40,32)));
+            System.out.println("Total de caixas 98x75x55: " + hSearch.getNumeroDeCaixas(new Vector3d(98,75,55)));
+            System.out.println("Total de caixas 60x59x39: " + hSearch.getNumeroDeCaixas(new Vector3d(60,59,39)));
             DesenhaContainer(hSearch.getContainer());
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -121,33 +112,39 @@ public class Main {
     }
 
     private static void DesenhaContainer(Container _ctn) {
-        System.out.print("Desenhando comada Z = 1\n");
-        for (int i = 0; i < _ctn.getX(); i++) {
-            for (int j = 0; j < _ctn.getY(); j++) {
-                System.out.print(_ctn.spMatrix[i][j][0] == true ? 1 : 0);
+        if (_ctn.getX() <= 50 && _ctn.getY() <= 50 && _ctn.getZ() <= 50) {
+            System.out.print("Desenhando comada Z = 1\n");
+            for (int i = 0; i < _ctn.getX(); i++) {
+                for (int j = 0; j < _ctn.getY(); j++) {
+                    System.out.print(_ctn.spMatrix[i][j][0] == true ? 1 : 0);
+                }
+                System.out.print("\n");
             }
-            System.out.print("\n");
-        }
-        System.out.print("Desenhando comada Z = 2\n");
-        for (int i = 0; i < _ctn.getX(); i++) {
-            for (int j = 0; j < _ctn.getY(); j++) {
-                System.out.print(_ctn.spMatrix[i][j][1] == true ? 1 : 0);
+            System.out.print("Desenhando comada Z = 2\n");
+            for (int i = 0; i < _ctn.getX(); i++) {
+                for (int j = 0; j < _ctn.getY(); j++) {
+                    System.out.print(_ctn.spMatrix[i][j][1] == true ? 1 : 0);
+                }
+                System.out.print("\n");
             }
-            System.out.print("\n");
-        }
-        System.out.print("Desenhando comada X = 1\n");
-        for (int j = _ctn.getZ() - 1; j >= 0; j--) {
-            for (int i = 0; i < _ctn.getY(); i++) {
-                System.out.print(_ctn.spMatrix[0][i][j] == true ? 1 : 0);
+            System.out.print("Desenhando comada X = 1\n");
+            for (int j = _ctn.getZ() - 1; j >= 0; j--) {
+                for (int i = 0; i < _ctn.getY(); i++) {
+                    System.out.print(_ctn.spMatrix[0][i][j] == true ? 1 : 0);
+                }
+                System.out.print("\n");
             }
-            System.out.print("\n");
-        }
-        System.out.print("Desenhando comada X = 2\n");
-        for (int j = _ctn.getZ() - 1; j >= 0; j--) {
-            for (int i = 0; i < _ctn.getY(); i++) {
-                System.out.print(_ctn.spMatrix[1][i][j] == true ? 1 : 0);
+            System.out.print("Desenhando comada X = 2\n");
+            for (int j = _ctn.getZ() - 1; j >= 0; j--) {
+                for (int i = 0; i < _ctn.getY(); i++) {
+                    System.out.print(_ctn.spMatrix[1][i][j] == true ? 1 : 0);
+                }
+                System.out.print("\n");
             }
-            System.out.print("\n");
+        } else {
+            System.out.println("Container grande demais para ser desenhado.");
         }
     }
 }
+
+

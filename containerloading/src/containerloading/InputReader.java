@@ -20,6 +20,7 @@ public class InputReader {
     private List<Box> boxes = new ArrayList<Box>();
     private Long seed;
     private String filePath;
+    private Integer boxTypes;
 
     public InputReader(String filePath) {
         this.filePath = filePath;
@@ -47,25 +48,25 @@ public class InputReader {
                 Integer conatinerHeight = Integer.parseInt(containerDataArray[2]);
 
                 String boxTypesNumberStr = reader.readLine().trim();
-                Integer boxTypes = Integer.parseInt(boxTypesNumberStr);
+                boxTypes = Integer.parseInt(boxTypesNumberStr);
 
                 for (int j = 0; j < boxTypes; j++) {
                     String boxData = reader.readLine().trim();
                     String[] boxDataArray = boxData.split(" ");
 
                     Integer boxWidth = Integer.parseInt(boxDataArray[1]);
-                    Boolean widthVertical = Boolean.parseBoolean(boxDataArray[2]);
+                    Boolean widthVertical = !Boolean.parseBoolean(boxDataArray[2]);
 
                     Integer boxLength = Integer.parseInt(boxDataArray[3]);
-                    Boolean lengthVertical = Boolean.parseBoolean(boxDataArray[4]);
+                    Boolean lengthVertical = !Boolean.parseBoolean(boxDataArray[4]);
 
                     Integer boxHeigth = Integer.parseInt(boxDataArray[5]);
-                    Boolean heigthVertical = Boolean.parseBoolean(boxDataArray[6]);
+                    Boolean heigthVertical = !Boolean.parseBoolean(boxDataArray[6]);
 
                     Integer numberOfBoxes = Integer.parseInt(boxDataArray[7]);
 
                     if (id == instanceNumber) {
-                        addBox(boxWidth, widthVertical, boxLength, lengthVertical, boxHeigth, heigthVertical, numberOfBoxes);
+                        addBox(boxWidth, widthVertical, boxLength, lengthVertical, boxHeigth, heigthVertical, numberOfBoxes,j+1);
                     }
                 }
 
@@ -74,12 +75,16 @@ public class InputReader {
                 }
             }
         } catch (IOException e) {
-            System.out.println("Houve um erro na hora de ler o arquivo.\n" + e.getMessage());
+            System.out.println("Houve um erro na hora de ler o arquivo. \n" + e.getMessage());
         }
     }
 
-    private void addBox(Integer boxWidth, Boolean widthVertical, Integer boxLength, Boolean lengthVertical, Integer boxHeigth, Boolean heigthVertical, Integer numberOfBoxes) {
-        Box box = new Box(new Vector3d(boxWidth, boxLength, boxHeigth), widthVertical, lengthVertical, heigthVertical);
+    private void addBox(Integer boxWidth, Boolean widthVertical,
+                        Integer boxLength, Boolean lengthVertical,
+                        Integer boxHeigth, Boolean heigthVertical,
+                        Integer numberOfBoxes,Integer boxType) {
+        Box box = new Box(new Vector3d(boxWidth, boxLength, boxHeigth),
+                            widthVertical, lengthVertical, heigthVertical,boxType);
 
         for (int i = 0; i < numberOfBoxes; i++) {
             boxes.add(box);
@@ -96,5 +101,9 @@ public class InputReader {
 
     public Long getSeed() {
         return seed;
+    }
+
+    public Integer getBoxTypes() {
+        return boxTypes;
     }
 }

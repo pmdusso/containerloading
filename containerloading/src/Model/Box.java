@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package Model;
 
 /**
@@ -18,20 +17,22 @@ public class Box {
     //se a caixa está rotacionada
     public boolean isRotated;
     //Idicates if side can be placed horizontally
-    public boolean xv,yv,zv;
-    public int volume;
+    public boolean xv, yv, zv;
+    //The box volume
+    private int volume;
+    //The type of the box
+    private int boxType;
     //Reflects the sides os of the box according to it's orientation
     public Vector3d relativeDimensions;
     public Vector3d relativeCoordenates;
-
     public Orientation vSide;
 
     //Class constructor
-    public Box(Vector3d _sides, boolean _xv, boolean _yv, boolean _zv)
-    {
+    public Box(Vector3d _sides, boolean _xv, boolean _yv, boolean _zv,int _boxType) {
         //Set sides
         this.sides = new Vector3d(_sides.x, _sides.y, _sides.z);
-       
+        //sets the box type.
+        this.boxType = _boxType;
         //Default vertical orientation == z
         this.vSide = Orientation.z;
         //quando criada, a caixa esta com os sides originais
@@ -53,60 +54,54 @@ public class Box {
     }
 
     //Checks if a box axis can be placed vertically
-    public boolean canFlip(Orientation or)
-    {
-        switch(or)
-        {
-            case x:
-            {
-                if(this.xv)
+    public boolean canFlip(Orientation or) {
+        switch (or) {
+            case x: {
+                if (this.xv) {
                     return true;
-                else
+                } else {
                     return false;
+                }
             }
-            case y:
-            {
-                if(this.yv)
+            case y: {
+                if (this.yv) {
                     return true;
-                else
+                } else {
                     return false;
+                }
             }
-            case z:
-            {
-                if(this.zv)
+            case z: {
+                if (this.zv) {
                     return true;
-                else
+                } else {
                     return false;
+                }
             }
         }
         return false;
     }
 
     //Changes the relativeDimensions[] values to reflects the box vertical orientation
-    public void flip(Orientation or)
-    {
-        if (this.vSide == or)
+    public void flip(Orientation or) {
+        if (this.vSide == or) {
             return;
+        }
 
         this.vSide = or;
-        switch(or)
-        {
-            case  x:
-            {
+        switch (or) {
+            case x: {
                 this.relativeDimensions.x = this.sides.z;
                 this.relativeDimensions.y = this.sides.y;
                 this.relativeDimensions.z = this.sides.x;
                 break;
             }
-            case y:
-            {
+            case y: {
                 this.relativeDimensions.x = this.sides.x;
                 this.relativeDimensions.y = this.sides.z;
                 this.relativeDimensions.z = this.sides.y;
                 break;
             }
-            case z:
-            {
+            case z: {
                 this.relativeDimensions.x = this.sides.x;
                 this.relativeDimensions.y = this.sides.y;
                 this.relativeDimensions.z = this.sides.z;
@@ -118,12 +113,18 @@ public class Box {
     /*
      * Rotates a box 90° around container z axis
      */
-    public void rotate()
-    {
+    public void rotate() {
         int aux = this.relativeDimensions.x;
         this.relativeDimensions.x = this.relativeDimensions.y;
         this.relativeDimensions.y = aux;
         this.isRotated = !this.isRotated;
     }
 
+    public int getBoxType() {
+        return boxType;
+    }
+
+    public int getVolume() {
+        return this.volume;
+    }
 }
