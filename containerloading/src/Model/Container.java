@@ -108,7 +108,7 @@ public class Container {
                 }
             }
         } catch (Exception ex) {
-            System.out.println(ex.getMessage());
+            System.out.println("\n/*FallBox()\n *EXCEPTION:: " + e.toString() + "\n */");
         }
 
         return pos;
@@ -172,7 +172,7 @@ public class Container {
             }
 
         } catch (Exception ex) {
-            System.out.println(ex.getMessage());
+            System.out.println("\n/*fitsHere()\n *EXCEPTION:: " + e.toString() + "\n */");
         }
         return true;
     }
@@ -228,7 +228,7 @@ public class Container {
 
 
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            System.out.println("\n/*fitsIn()\n *EXCEPTION:: " + e.toString() + "\n */");
         }
         return null;
     }
@@ -252,7 +252,7 @@ public class Container {
                 }
             }
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            System.out.println("\n/*InsertBox()\n *EXCEPTION:: " + e.toString() + "\n */");
             return false;
         }
         return true;
@@ -277,7 +277,7 @@ public class Container {
                 }
             }
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            System.out.println("\n/*removeBox()\n *EXCEPTION:: " + e.toString() + "\n */");
             return false;
         }
         return true;
