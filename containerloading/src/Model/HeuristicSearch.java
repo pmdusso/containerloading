@@ -1,3 +1,6 @@
+
+
+
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
@@ -66,7 +69,7 @@ public class HeuristicSearch {
                         //aquele "modelo" de caixa não cabe dentro do container no momento.
                         //Caixa sai da lista de externas e entra na lista tabu
                         tempBox = listaTabu.addBox(bestBox);
-
+                        System.out.println("### tabuzeando caixa (" + bestBox.sides.x + "," + bestBox.sides.y + "," + bestBox.sides.z + ")");
                         //devolve para a lista de caixas a serem adicionadas aquelas que
                         //nao cabem mais na lista tabu.
                         if (tempBox != null) {
