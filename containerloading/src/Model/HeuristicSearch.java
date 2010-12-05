@@ -1,6 +1,3 @@
-
-
-
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
@@ -44,13 +41,12 @@ public class HeuristicSearch {
         int nroIteracoes = 0;
 
         try {
-
             //critério de parada: volume dentro do container igual ao volume do container (sol. ótima)
             //numero de iteracoes maximo.
             while (volumeTotal(boxesInside) < container.getVolume() && nroIteracoes <= 500000) {
                 //seleciona uma caixa que ainda não está no container seguindo alguma euristica
                 //(nesse caso está sendo a de pegar a melhor caixa == caixa com maior volume.
-                bestBox = melhorCaixa(boxesOutside);
+                bestBox = melhorCaixaDois(boxesOutside, true);
                 //se aquela caixa não está na lista tabu e ela cabe em algum lugar dentro do container
                 //a solução atual mais essa caixa é um vizinho válido da solução atual.
                 if (!listaTabu.contains(bestBox)) {
@@ -69,19 +65,17 @@ public class HeuristicSearch {
                         //aquele "modelo" de caixa não cabe dentro do container no momento.
                         //Caixa sai da lista de externas e entra na lista tabu
                         tempBox = listaTabu.addBox(bestBox);
-                        System.out.println("### tabuzeando caixa (" + bestBox.sides.x + "," + bestBox.sides.y + "," + bestBox.sides.z + ")");
+                        System.out.println("### tabuzeando caixa (" + bestBox.relativeDimensions.x + "," + bestBox.relativeDimensions.y + "," + bestBox.relativeDimensions.z + ")");
                         //devolve para a lista de caixas a serem adicionadas aquelas que
                         //nao cabem mais na lista tabu.
                         if (tempBox != null) {
                             //Caixa sai da lista tabu e entra na lista de externas
                             boxesOutside.add(tempBox);
                         }
-
                         //if (solucaoIntermediaria.size() > 0) {
                         //solucaoIntermediaria.remove(solucaoIntermediaria.size() - 1);
                         //}
                     }
-
                     int fo = funcaoObjetivo(solucaoIntermediaria);
                     if (fo > valorFuncaoObjetivo) {
                         valorFuncaoObjetivo = fo;
@@ -102,12 +96,12 @@ public class HeuristicSearch {
                      * e essas caixas (que tem o mesmo volume) não estão mais a
                      * disposição.
                      */
-                    bestBox.rotate();
-                    boxesOutside.add(bestBox);
+                    if ((bestBox.sides.x != bestBox.sides.y) || (bestBox.sides.x != bestBox.sides.z)) {
+                        bestBox.rotate();
+                        boxesOutside.add(bestBox);
+                    }
                 }
-
                 nroIteracoes++;
-
             }
 
         } catch (Exception e) {
@@ -151,6 +145,21 @@ public class HeuristicSearch {
             if (!listaTabu.contains(bestBox)) {
                 ret = _lstBoxes.remove(_lstBoxes.indexOf(bestBox));
             }
+        }
+        return ret;
+    }
+
+    public Box melhorCaixaDois(List<Box> _lstBoxes, boolean dois) {
+        //Inicializa o bestbox como nulo
+        Box ret = null;
+        if (_lstBoxes.size() > 0) {
+            Box bestBox = _lstBoxes.get(0);
+            for (Box box : _lstBoxes) {
+                if (box.getVolume() > bestBox.getVolume()) {
+                    bestBox = box;
+                }
+            }
+            ret = _lstBoxes.remove(_lstBoxes.indexOf(bestBox));
         }
         return ret;
     }

@@ -23,12 +23,14 @@ public class Main {
      */
     public static void main(String[] args) {
 
-        BitWiseTests();
+        //BitWiseTests();
         //Testes();
         //Testes2();
-        //CasoTesteOtavio();
+        CasoTesteOtavio();
         //Testes2();
         //CasoTesteOtavio_2();
+        //CasoTeste1();
+        //CasoTesteRotacionaCaixaDaLista();
     }
 
     private static void Testes() {
@@ -109,22 +111,19 @@ public class Main {
         Container testContainer = new Container(new Vector3d(10, 10, 10));
         List<Box> testListBox = new ArrayList<Box>();
         List<Box> listForTabu = new ArrayList<Box>(3);
-
-        Box testBox = new Box(new Vector3d(1, 1, 1), true, true, true, 1);
-//        listForTabu.add(testBox);
-//        for (int i = 0; i < 1000; i++) {
-//            testListBox.add(testBox);
-//        }
-        testBox = new Box(new Vector3d(2, 2, 2), true, true, true, 2);
-        listForTabu.add(testBox);
+        
+        listForTabu.add(new Box(new Vector3d(1, 1, 1), true, true, true, 1));
         for (int i = 0; i < 1000; i++) {
-            testListBox.add(testBox);
+            testListBox.add(new Box(new Vector3d(1, 1, 1), true, true, true, 1));
         }
-//        testBox = new Box(new Vector3d(3, 3, 3), true, true, true, 3);
-//        listForTabu.add(testBox);
-//        for (int i = 0; i < 1000; i++) {
-//            testListBox.add(testBox);
-//        }
+        listForTabu.add(new Box(new Vector3d(2, 2, 2), true, true, true, 2));
+        for (int i = 0; i < 1000; i++) {
+            testListBox.add(new Box(new Vector3d(2, 2, 2), true, true, true, 2));
+        }
+        listForTabu.add(new Box(new Vector3d(3, 3, 3), true, true, true, 3));
+        for (int i = 0; i < 1000; i++) {
+            testListBox.add(new Box(new Vector3d(3, 3, 3), true, true, true, 3));
+        }
         try {
             HeuristicSearch hSearch = new HeuristicSearch(testListBox, testContainer, listForTabu);
             System.out.println("Volume total dentro do container: " + hSearch.Resolve());
@@ -135,6 +134,42 @@ public class Main {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    private static void CasoTesteRotacionaCaixaDaLista() {
+        Container testContainer = new Container(new Vector3d(10, 10, 10));
+        List<Box> testListBox = new ArrayList<Box>();
+        Box testBox;
+        Box boxToRotate;
+
+        for (int i = 0; i < 10; i++) {
+            testBox = new Box(new Vector3d(1, 2, 3), true, true, true, 1);
+            testListBox.add(testBox);
+        }
+        System.out.println(testListBox.size());
+        for (Box box : testListBox) {
+            System.out.println(box.relativeDimensions.x + "x"
+                    + box.relativeDimensions.y + "x"
+                    + box.relativeDimensions.z);
+        }
+        boxToRotate = testListBox.remove(5);
+        System.out.println(testListBox.size());
+
+        System.out.println("Rotou uma caixa.");
+        boxToRotate.rotate();
+        System.out.println(boxToRotate.relativeDimensions.x + "x"
+                + boxToRotate.relativeDimensions.y + "x"
+                + boxToRotate.relativeDimensions.z);
+
+        testListBox.add(boxToRotate);
+        System.out.println(testListBox.size());
+        for (Box box : testListBox) {
+            System.out.println(box.relativeDimensions.x + "x"
+                    + box.relativeDimensions.y + "x"
+                    + box.relativeDimensions.z);
+        }
+
+
 
     }
 
@@ -203,9 +238,9 @@ public class Main {
         try {
             HeuristicSearch hSearch = new HeuristicSearch(lstBoxesOutside, myContainer, lstTypeBoxes);
             System.out.println("Volume total dentro do container: " + hSearch.Resolve());
-            System.out.println("Total de caixas 20x20x20: " + hSearch.getNumeroDeCaixas(new Vector3d(20, 20, 20)));
-            System.out.println("Total de caixas 30x30x30: " + hSearch.getNumeroDeCaixas(new Vector3d(30, 30, 30)));
-            System.out.println("Total de caixas 40x40x40: " + hSearch.getNumeroDeCaixas(new Vector3d(40, 40, 40)));
+            System.out.println("Total de caixas (100,1,1): " + hSearch.getNumeroDeCaixas(new Vector3d(lstTypeBoxes.get(0).relativeDimensions.x, lstTypeBoxes.get(0).relativeDimensions.y, lstTypeBoxes.get(0).relativeDimensions.z)));
+            System.out.println("Total de caixas (98,30,30): " + hSearch.getNumeroDeCaixas(new Vector3d(lstTypeBoxes.get(1).relativeDimensions.x, lstTypeBoxes.get(1).relativeDimensions.y, lstTypeBoxes.get(1).relativeDimensions.z)));
+            System.out.println("Total de caixas (60,40,40): " + hSearch.getNumeroDeCaixas(new Vector3d(lstTypeBoxes.get(2).relativeDimensions.x, lstTypeBoxes.get(2).relativeDimensions.y, lstTypeBoxes.get(2).relativeDimensions.z)));
             if (hSearch.getNumeroDeCaixas(new Vector3d(1, 1, 1)) > 0) {
                 System.out.println("Total de caixas 1x1x1: " + hSearch.getNumeroDeCaixas(new Vector3d(1, 1, 1)));
             }
@@ -218,23 +253,36 @@ public class Main {
     }
 
     private static void BitWiseTests() {
-        int orientation = 1;
-        System.out.println(orientation);
-        orientation = orientation << 1;
-        System.out.println(orientation);
-        orientation = orientation << 1;
-        System.out.println(orientation);
-        orientation = orientation << 1;
-        System.out.println(orientation);
-        orientation = orientation << 1;
-        System.out.println(orientation);
-        orientation = orientation << 1;
-        System.out.println(orientation);
+        Box testBox = new Box(new Vector3d(1, 2, 3), true, true, true, 0);
+        System.out.println(testBox.relativeDimensions.x + "x"
+                + testBox.relativeDimensions.y + "x"
+                + testBox.relativeDimensions.z);
+        testBox.rotate();
+        System.out.println(testBox.relativeDimensions.x + "x"
+                + testBox.relativeDimensions.y + "x"
+                + testBox.relativeDimensions.z);
+        testBox.rotate();
+        System.out.println(testBox.relativeDimensions.x + "x"
+                + testBox.relativeDimensions.y + "x"
+                + testBox.relativeDimensions.z);
+        testBox.rotate();
+        System.out.println(testBox.relativeDimensions.x + "x"
+                + testBox.relativeDimensions.y + "x"
+                + testBox.relativeDimensions.z);
+        testBox.rotate();
+        System.out.println(testBox.relativeDimensions.x + "x"
+                + testBox.relativeDimensions.y + "x"
+                + testBox.relativeDimensions.z);
+        testBox.rotate();
+        System.out.println(testBox.relativeDimensions.x + "x"
+                + testBox.relativeDimensions.y + "x"
+                + testBox.relativeDimensions.z);
+        testBox.rotate();
+        System.out.println(testBox.relativeDimensions.x + "x"
+                + testBox.relativeDimensions.y + "x"
+                + testBox.relativeDimensions.z);
 
 
-        if ((orientation & 1) == 1) {
-            System.out.println("true");
-        }
     }
 
     private static void DesenhaContainer(Container _ctn) {
