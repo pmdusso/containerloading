@@ -81,8 +81,7 @@ public class InputReader {
         }
     }
 
-
-     public void readInputBR(Integer instanceNumber) {
+    public void readInputBR(Integer instanceNumber) {
         File input = new File(filePath);
         try {
             BufferedReader reader = new BufferedReader(new FileReader(input));
@@ -140,8 +139,7 @@ public class InputReader {
     private void addBox(Integer boxWidth, Boolean widthVertical,
             Integer boxLength, Boolean lengthVertical,
             Integer boxHeigth, Boolean heigthVertical,
-            Integer numberOfBoxes, Integer boxType)
-    {
+            Integer numberOfBoxes, Integer boxType) {
 
         Box box = new Box(new Vector3d(boxWidth, boxLength, boxHeigth),
                 widthVertical, lengthVertical, heigthVertical, boxType);
@@ -151,7 +149,7 @@ public class InputReader {
         for (int i = 0; i < numberOfBoxes; i++) {
             boxes.add(box);
         }
-        System.out.println("Added " + numberOfBoxes + " bofes of type: " + boxType + "(" + boxWidth + "," + boxLength +"," + boxHeigth + ")");
+        System.out.println("Added " + numberOfBoxes + " bofes of type: " + boxType + "(" + boxWidth + "," + boxLength + "," + boxHeigth + ")");
     }
 
     public List<Box> getBoxes() {
