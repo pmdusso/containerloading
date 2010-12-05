@@ -28,7 +28,7 @@ public class Box {
     public Orientation vSide;
 
     //Class constructor
-    public Box(Vector3d _sides, boolean _xv, boolean _yv, boolean _zv,int _boxType) {
+    public Box(Vector3d _sides, boolean _xv, boolean _yv, boolean _zv, int _boxType) {
         //Set sides
         this.sides = new Vector3d(_sides.x, _sides.y, _sides.z);
         //sets the box type.
