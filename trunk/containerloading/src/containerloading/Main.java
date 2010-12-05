@@ -23,11 +23,12 @@ public class Main {
      */
     public static void main(String[] args) {
 
+        BitWiseTests();
         //Testes();
         //Testes2();
         //CasoTesteOtavio();
         //Testes2();
-        CasoTesteOtavio_2();
+        //CasoTesteOtavio_2();
     }
 
     private static void Testes() {
@@ -214,6 +215,26 @@ public class Main {
             System.out.println(e.getMessage());
         }
 
+    }
+
+    private static void BitWiseTests() {
+        int orientation = 1;
+        System.out.println(orientation);
+        orientation = orientation << 1;
+        System.out.println(orientation);
+        orientation = orientation << 1;
+        System.out.println(orientation);
+        orientation = orientation << 1;
+        System.out.println(orientation);
+        orientation = orientation << 1;
+        System.out.println(orientation);
+        orientation = orientation << 1;
+        System.out.println(orientation);
+
+
+        if ((orientation & 1) == 1) {
+            System.out.println("true");
+        }
     }
 
     private static void DesenhaContainer(Container _ctn) {

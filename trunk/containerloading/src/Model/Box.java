@@ -4,6 +4,8 @@
  */
 package Model;
 
+import com.sun.org.apache.bcel.internal.generic.SWITCH;
+
 /**
  *
  * @author otavio_zabaleta
@@ -26,6 +28,7 @@ public class Box {
     public Vector3d relativeDimensions;
     public Vector3d relativeCoordenates;
     public Orientation vSide;
+    private int orientation = 1;
 
     //Class constructor
     public Box(Vector3d _sides, boolean _xv, boolean _yv, boolean _zv, int _boxType) {
@@ -114,10 +117,76 @@ public class Box {
      * Rotates a box 90° around container z axis
      */
     public void rotate() {
-        int aux = this.relativeDimensions.x;
-        this.relativeDimensions.x = this.relativeDimensions.y;
-        this.relativeDimensions.y = aux;
-        this.isRotated = !this.isRotated;
+        int aux = 0;
+//        int aux = this.relativeDimensions.x;
+//        this.relativeDimensions.x = this.relativeDimensions.y;
+//        this.relativeDimensions.y = aux;
+//        this.isRotated = !this.isRotated;
+
+        switch (this.orientation) {
+            case 1:
+                //Gira -90 graus em torno de Z
+                if (this.zv) {
+                    aux = this.relativeDimensions.y;
+                    this.relativeDimensions.y = this.relativeDimensions.x;
+                    this.relativeDimensions.x = aux;
+                    this.vSide = Orientation.z;
+                }
+                orientation = orientation << 1;
+                break;
+            case 2:
+                //Gira +90 graus em torno de Y
+                if (this.yv) {
+                    aux = this.relativeDimensions.z;
+                    this.relativeDimensions.z = this.relativeDimensions.x;
+                    this.relativeDimensions.x = aux;
+                    this.vSide = Orientation.y;
+                }
+                orientation = orientation << 1;
+                break;
+            case 4:
+                //Gira +90 graus em torno de Z
+                if (this.yv) {
+                    aux = this.relativeDimensions.x;
+                    this.relativeDimensions.x = this.relativeDimensions.y;
+                    this.relativeDimensions.y = aux;
+                    this.vSide = Orientation.y;
+                }
+                orientation = orientation << 1;
+                break;
+            case 8:
+                //Gira +90 graus em torno de Y
+                if (this.xv) {
+                    aux = this.relativeDimensions.z;
+                    this.relativeDimensions.z = this.relativeDimensions.x;
+                    this.relativeDimensions.x = aux;
+                    this.vSide = Orientation.x;
+                }
+                orientation = orientation << 1;
+                break;
+            case 16:
+                //Gira -90 graus em tonro de Z
+                if (this.xv) {
+                    aux = this.relativeDimensions.y;
+                    this.relativeDimensions.y = this.relativeDimensions.x;
+                    this.relativeDimensions.x = aux;
+                    this.vSide = Orientation.x;
+                }
+                orientation = orientation << 1;
+                break;
+            case 32:
+                //Gira -90 graus em tonro de Y
+                if (this.zv) {
+                    aux = this.relativeDimensions.x;
+                    this.relativeDimensions.x = this.relativeDimensions.z;
+                    this.relativeDimensions.z = aux;
+                    this.vSide = Orientation.z;
+                }
+                orientation = orientation << 1;
+                break;
+        }
+
+
     }
 
     public int getBoxType() {
