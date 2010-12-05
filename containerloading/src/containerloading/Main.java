@@ -5,7 +5,6 @@
 package containerloading;
 
 import Model.*;
-import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,10 +21,11 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        
+
         //Testes();
         //Testes2();
-
+        CasoTesteOtavio();
+        //Testes2();
         CasoTesteOtavio_2();
     }
 
@@ -109,26 +109,26 @@ public class Main {
         List<Box> listForTabu = new ArrayList<Box>(3);
 
         Box testBox = new Box(new Vector3d(1, 1, 1), true, true, true, 1);
-        listForTabu.add(testBox);
-        for (int i = 0; i < 1000; i++) {
-            testListBox.add(testBox);
-        }
+//        listForTabu.add(testBox);
+//        for (int i = 0; i < 1000; i++) {
+//            testListBox.add(testBox);
+//        }
         testBox = new Box(new Vector3d(2, 2, 2), true, true, true, 2);
         listForTabu.add(testBox);
         for (int i = 0; i < 1000; i++) {
             testListBox.add(testBox);
         }
-        testBox = new Box(new Vector3d(3, 3, 3), true, true, true, 3);
-        listForTabu.add(testBox);
-        for (int i = 0; i < 1000; i++) {
-            testListBox.add(testBox);
-        }
+//        testBox = new Box(new Vector3d(3, 3, 3), true, true, true, 3);
+//        listForTabu.add(testBox);
+//        for (int i = 0; i < 1000; i++) {
+//            testListBox.add(testBox);
+//        }
         try {
             HeuristicSearch hSearch = new HeuristicSearch(testListBox, testContainer, listForTabu);
             System.out.println("Volume total dentro do container: " + hSearch.Resolve());
-            System.out.println("Total de caixas 1x1x1: " + hSearch.getNumeroDeCaixas(new Vector3d(60, 40, 32)));
-            System.out.println("Total de caixas 2x2x2: " + hSearch.getNumeroDeCaixas(new Vector3d(98, 75, 55)));
-            System.out.println("Total de caixas 3x3x3: " + hSearch.getNumeroDeCaixas(new Vector3d(60, 59, 39)));
+            System.out.println("Total de caixas 1x1x1: " + hSearch.getNumeroDeCaixas(new Vector3d(1, 1, 1)));
+            System.out.println("Total de caixas 2x2x2: " + hSearch.getNumeroDeCaixas(new Vector3d(2, 2, 2)));
+            System.out.println("Total de caixas 3x3x3: " + hSearch.getNumeroDeCaixas(new Vector3d(3, 3, 3)));
             DesenhaContainer(hSearch.getContainer());
         } catch (Exception e) {
             System.out.println(e.getMessage());
