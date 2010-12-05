@@ -77,7 +77,7 @@ public class InputReader {
                 }
             }
         } catch (IOException e) {
-            System.out.println("Houve um erro na hora de ler o arquivo. \n" + e.getMessage());
+            System.out.println("<readInput> Houve um erro na hora de ler o arquivo. \n" + e.toString());
         }
     }
 
@@ -132,7 +132,7 @@ public class InputReader {
                 }
             }
         } catch (IOException e) {
-            System.out.println("Houve um erro na hora de ler o arquivo. \n" + e.getMessage());
+            System.out.println("<readInputBR> Houve um erro na hora de ler o arquivo. \n" + e.toString());
         }
     }
 
