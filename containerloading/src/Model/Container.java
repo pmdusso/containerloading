@@ -214,13 +214,6 @@ public class Container {
                         if (fitsHere(_box, new Vector3d(k, j, i))) {
                             _box.relativeCoordenates = new Vector3d(k, j, i);
                             return _box;
-                        } else {
-                            //Se nao cabe, rotaciona ela e tenta de novo.
-//                            _box.rotate();
-//                            if (fitsHere(_box, new Vector3d(k, j, i))) {
-//                                _box.relativeCoordenates = new Vector3d(k, j, i);
-//                                return _box;
-                            //}
                         }
                     }
                 }
