@@ -37,7 +37,13 @@ public class BTabu {
         }
         return tabuSize;
     }
-
+    /**
+     * Adiciona uma caixa na lista Tabu.
+     * A lista tem um limite máximo de caixas.
+     * Caso ao adicionar uma caixa a lista esteja cheia, retorna a caixa que
+     * está a mais tempo na lista. Caso ao adicionar uma caixa o limite não
+     * seja atingido, não retorna nenhuma caixa.
+     */
     public Box addBox(Box _box) {
         //se a lista estiver cheia, remove a ultima solucao valida
         if (listaTabu.size() == listLimit) {
