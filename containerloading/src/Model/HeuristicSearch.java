@@ -17,7 +17,8 @@ public class HeuristicSearch {
     private List<Box> boxesOutside = new ArrayList<Box>();
     private Container container;
     private BTabu listaTabu;
-
+    private static int maxIterations = 150000;
+            ;
     public Container getContainer() {
         return container;
     }
@@ -43,7 +44,7 @@ public class HeuristicSearch {
         try {
             //critério de parada: volume dentro do container igual ao volume do container (sol. ótima)
             //numero de iteracoes maximo.
-            while (volumeTotal(boxesInside) < container.getVolume() && nroIteracoes <= 500000) {
+            while (volumeTotal(boxesInside) < container.getVolume() && nroIteracoes <= maxIterations) {
                 //seleciona uma caixa que ainda não está no container seguindo alguma euristica
                 //(nesse caso está sendo a de pegar a melhor caixa == caixa com maior volume.
                 bestBox = melhorCaixaDois(boxesOutside, true);
@@ -102,10 +103,18 @@ public class HeuristicSearch {
                     }
                 }
                 nroIteracoes++;
+                if(nroIteracoes == maxIterations)
+                {
+                    System.out.println("\n========================================================");
+                    System.out.println("| Nnum. max. de iteracoes atingindo, busca finalizada.  |");
+                    System.out.println("========================================================");
+                    System.out.println(nroIteracoes);
+
+                }
             }
 
         } catch (Exception e) {
-            System.out.print(e.getMessage());
+            System.out.println("\n/*Resolve()\n *EXCEPTION:: " + e.toString() + "\n */");
         }
         return valorFuncaoObjetivo;
     }
