@@ -4,8 +4,6 @@
  */
 package Model;
 
-import com.sun.org.apache.bcel.internal.generic.SWITCH;
-
 /**
  *
  * @author otavio_zabaleta
