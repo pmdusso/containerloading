@@ -93,23 +93,26 @@ public class Main {
     private static void CasoTesteOtavio() {
 
         Container testContainer = new Container(new Vector3d(10, 10, 10));
-        Box testBox = new Box(new Vector3d(1, 1, 1), true, true, true, 1);
         List<Box> testListBox = new ArrayList<Box>();
+        List<Box> listForTabu = new ArrayList<Box>(3);
 
+        Box testBox = new Box(new Vector3d(1, 1, 1), true, true, true, 1);
+        listForTabu.add(testBox);
         for (int i = 0; i < 1000; i++) {
             testListBox.add(testBox);
         }
         testBox = new Box(new Vector3d(2, 2, 2), true, true, true, 2);
+        listForTabu.add(testBox);
         for (int i = 0; i < 1000; i++) {
             testListBox.add(testBox);
         }
         testBox = new Box(new Vector3d(3, 3, 3), true, true, true, 3);
+        listForTabu.add(testBox);
         for (int i = 0; i < 1000; i++) {
             testListBox.add(testBox);
         }
-
         try {
-            HeuristicSearch hSearch = new HeuristicSearch(testListBox, testContainer, 3);
+            HeuristicSearch hSearch = new HeuristicSearch(testListBox, testContainer, listForTabu);
             System.out.println("Volume total dentro do container: " + hSearch.Resolve());
             System.out.println("Total de caixas 1x1x1: " + hSearch.getNumeroDeCaixas(new Vector3d(60, 40, 32)));
             System.out.println("Total de caixas 2x2x2: " + hSearch.getNumeroDeCaixas(new Vector3d(98, 75, 55)));
@@ -128,10 +131,11 @@ public class Main {
 
         Container myContainer = reader.getContainer();
         List<Box> lstBoxesOutside = reader.getBoxes();
+        List<Box> lstTypeBoxes = reader.getTypeBoxes();
         int boxTypes = reader.getBoxTypes();
 
         try {
-            HeuristicSearch hSearch = new HeuristicSearch(lstBoxesOutside, myContainer, boxTypes);
+            HeuristicSearch hSearch = new HeuristicSearch(lstBoxesOutside, myContainer, lstTypeBoxes);
             System.out.println("Volume total dentro do container: " + hSearch.Resolve());
             System.out.println("Total de caixas 60x40x32: " + hSearch.getNumeroDeCaixas(new Vector3d(60, 40, 32)));
             System.out.println("Total de caixas 98x75x55: " + hSearch.getNumeroDeCaixas(new Vector3d(98, 75, 55)));

@@ -18,6 +18,7 @@ public class InputReader {
 
     private Container container;
     private List<Box> boxes = new ArrayList<Box>();
+    private List<Box> typeBoxes = new ArrayList<Box>();
     private Long seed;
     private String filePath;
     private Integer boxTypes;
@@ -50,6 +51,7 @@ public class InputReader {
                 String boxTypesNumberStr = reader.readLine().trim();
                 boxTypes = Integer.parseInt(boxTypesNumberStr);
 
+
                 for (int j = 0; j < boxTypes; j++) {
                     String boxData = reader.readLine().trim();
                     String[] boxDataArray = boxData.split(" ");
@@ -66,7 +68,7 @@ public class InputReader {
                     Integer numberOfBoxes = Integer.parseInt(boxDataArray[7]);
 
                     if (id == instanceNumber) {
-                        addBox(boxWidth, widthVertical, boxLength, lengthVertical, boxHeigth, heigthVertical, numberOfBoxes,j+1);
+                        addBox(boxWidth, widthVertical, boxLength, lengthVertical, boxHeigth, heigthVertical, numberOfBoxes, j);
                     }
                 }
 
@@ -80,11 +82,14 @@ public class InputReader {
     }
 
     private void addBox(Integer boxWidth, Boolean widthVertical,
-                        Integer boxLength, Boolean lengthVertical,
-                        Integer boxHeigth, Boolean heigthVertical,
-                        Integer numberOfBoxes,Integer boxType) {
+            Integer boxLength, Boolean lengthVertical,
+            Integer boxHeigth, Boolean heigthVertical,
+            Integer numberOfBoxes, Integer boxType) {
+
         Box box = new Box(new Vector3d(boxWidth, boxLength, boxHeigth),
-                            widthVertical, lengthVertical, heigthVertical,boxType);
+                widthVertical, lengthVertical, heigthVertical, boxType);
+
+        typeBoxes.add(box);
 
         for (int i = 0; i < numberOfBoxes; i++) {
             boxes.add(box);
@@ -93,6 +98,10 @@ public class InputReader {
 
     public List<Box> getBoxes() {
         return boxes;
+    }
+
+    public List<Box> getTypeBoxes() {
+        return typeBoxes;
     }
 
     public Container getContainer() {
