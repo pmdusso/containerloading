@@ -44,7 +44,8 @@ public class HeuristicSearch {
         try {
             //critério de parada: volume dentro do container igual ao volume do container (sol. ótima)
             //numero de iteracoes maximo.
-            while (volumeTotal(boxesInside) < container.getVolume() && nroIteracoes <= maxIterations) {
+            while (volumeTotal(boxesInside) < container.getVolume()
+                    && boxesOutside.size() > 0 && nroIteracoes <= 500000) {
                 //seleciona uma caixa que ainda não está no container seguindo alguma euristica
                 //(nesse caso está sendo a de pegar a melhor caixa == caixa com maior volume.
                 bestBox = melhorCaixaDois(boxesOutside, true);
