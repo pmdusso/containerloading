@@ -18,7 +18,7 @@ public class GraspTest {
 
     @Test
     public void test() {
-	this.reader = new InputReader("C:\\Users\\Matheus Abegg\\Desktop\\brm.txt");
+	this.reader = new InputReader("C:\\Users\\Matheus Abegg\\Desktop\\br10.txt");
 	reader.readInput(1);
 	this.grasp = new GRASP(reader.getContainer(), reader.getBoxes(), reader.getBoxTypes(), reader.getSeed());
 
