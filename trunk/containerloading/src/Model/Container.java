@@ -108,7 +108,7 @@ public class Container {
                 }
             }
         } catch (Exception ex) {
-            System.out.println("\n/*FallBox()\n *EXCEPTION:: " + e.toString() + "\n */");
+            System.out.println("\n/*FallBox()\n *EXCEPTION:: " + ex.toString() + "\n */");
         }
 
         return pos;
@@ -172,7 +172,7 @@ public class Container {
             }
 
         } catch (Exception ex) {
-            System.out.println("\n/*fitsHere()\n *EXCEPTION:: " + e.toString() + "\n */");
+            System.out.println("\n/*fitsHere()\n *EXCEPTION:: " + ex.toString() + "\n */");
         }
         return true;
     }

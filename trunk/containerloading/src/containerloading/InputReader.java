@@ -151,7 +151,7 @@ public class InputReader {
         for (int i = 0; i < numberOfBoxes; i++) {
             boxes.add(new Box(new Vector3d(boxWidth, boxLength, boxHeigth), widthVertical, lengthVertical, heigthVertical, boxType));
         }
-        System.out.println("Added " + numberOfBoxes + " bofes of type: " + boxType + "(" + boxWidth + "," + boxLength + "," + boxHeigth + ")");
+        System.out.println("Added " + numberOfBoxes + " boxes of type: " + boxType + "(" + boxWidth + "," + boxLength + "," + boxHeigth + ")");
     }
 
     public List<Box> getBoxes() {

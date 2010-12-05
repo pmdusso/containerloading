@@ -26,11 +26,12 @@ public class Main {
         //BitWiseTests();
         //Testes();
         //Testes2();
-        CasoTesteOtavio();
+        //CasoTesteOtavio();
         //Testes2();
         //CasoTesteOtavio_2();
-        //CasoTeste1();
         //CasoTesteRotacionaCaixaDaLista();
+
+        ContainerLoading("br1.txt");
     }
 
     private static void Testes() {
@@ -111,7 +112,7 @@ public class Main {
         Container testContainer = new Container(new Vector3d(10, 10, 10));
         List<Box> testListBox = new ArrayList<Box>();
         List<Box> listForTabu = new ArrayList<Box>(3);
-        
+
         listForTabu.add(new Box(new Vector3d(1, 1, 1), true, true, true, 1));
         for (int i = 0; i < 1000; i++) {
             testListBox.add(new Box(new Vector3d(1, 1, 1), true, true, true, 1));
@@ -222,30 +223,39 @@ public class Main {
 
     }
 
-    private static void CasoTeste1() {
+    private static void ContainerLoading(String _file) {
 
-        InputReader reader = new InputReader(FilesPathWindows + "br1.txt");
+        System.out.println("===============================================");
+        System.out.println(_file.toUpperCase());
+        InputReader reader = new InputReader(FilesPathWindows + _file);
         reader.readInput(50);
 
         Container myContainer = reader.getContainer();
         List<Box> lstBoxesOutside = reader.getBoxes();
         List<Box> lstTypeBoxes = reader.getTypeBoxes();
-        int containervol = myContainer.getX() * myContainer.getY() * myContainer.getZ();
-        System.out.println("Container Volume: " + containervol);
-        System.out.println("nº de caixas na lista: " + lstBoxesOutside.size());
-        System.out.println("nº de tipos de caixas na lista: " + lstTypeBoxes.size());
+        StringBuilder sb;
+
+        System.out.println("Container Volume: " + myContainer.getVolume());
+        System.out.println("Nº de caixas na lista: " + lstBoxesOutside.size());
+        System.out.println("Nº de tipos de caixas na lista: " + lstTypeBoxes.size());
 
         try {
             HeuristicSearch hSearch = new HeuristicSearch(lstBoxesOutside, myContainer, lstTypeBoxes);
             System.out.println("Volume total dentro do container: " + hSearch.Resolve());
-            System.out.println("Total de caixas (100,1,1): " + hSearch.getNumeroDeCaixas(new Vector3d(lstTypeBoxes.get(0).relativeDimensions.x, lstTypeBoxes.get(0).relativeDimensions.y, lstTypeBoxes.get(0).relativeDimensions.z)));
-            System.out.println("Total de caixas (98,30,30): " + hSearch.getNumeroDeCaixas(new Vector3d(lstTypeBoxes.get(1).relativeDimensions.x, lstTypeBoxes.get(1).relativeDimensions.y, lstTypeBoxes.get(1).relativeDimensions.z)));
-            System.out.println("Total de caixas (60,40,40): " + hSearch.getNumeroDeCaixas(new Vector3d(lstTypeBoxes.get(2).relativeDimensions.x, lstTypeBoxes.get(2).relativeDimensions.y, lstTypeBoxes.get(2).relativeDimensions.z)));
-            if (hSearch.getNumeroDeCaixas(new Vector3d(1, 1, 1)) > 0) {
-                System.out.println("Total de caixas 1x1x1: " + hSearch.getNumeroDeCaixas(new Vector3d(1, 1, 1)));
+            for (Box box : lstTypeBoxes) {
+                sb = new StringBuilder();
+                sb.append("Total de caixas ");
+                sb.append(box.relativeDimensions.x).append("x");
+                sb.append(box.relativeDimensions.y).append("x");
+                sb.append(box.relativeDimensions.z).append(": ");
+                sb.append(hSearch.getNumeroDeCaixas(new Vector3d(
+                        box.relativeDimensions.x,
+                        box.relativeDimensions.y,
+                        box.relativeDimensions.z)));
+                System.out.println(sb.toString());
             }
-
             DesenhaContainer(hSearch.getContainer());
+            System.out.println("===============================================");
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
