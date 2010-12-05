@@ -35,9 +35,9 @@ public class Main {
         Vector3d endPos = myContainer.FallBox(myBox, pos);
         //System.out.println("Box placed successfully at (" + endPos.x + "," + endPos.y + "," + endPos.z + ")\n\n");
         //Testes();
+        Testes2();
 
-
-        CasoTeste1();
+        //CasoTeste1();
     }
 
     private static void Testes() {
@@ -90,6 +90,29 @@ public class Main {
 
     }
 
+    private static void Testes2() {
+        Box testBox1 = new Box(new Vector3d(1, 1, 1), true, true, true, 1);
+        Box testBox2 = new Box(new Vector3d(2, 2, 2), true, true, true, 2);
+        Box testBox3 = new Box(new Vector3d(3, 3, 3), true, true, true, 3);
+        List<Box> testList = new ArrayList<Box>();
+
+        testList.add(testBox1);//1
+        testList.add(testBox2);//8
+        testList.add(testBox2);//8
+        testList.add(testBox1);//1
+        testList.add(testBox3);//27
+        testList.add(testBox2);//8
+        testList.add(testBox1);//1
+        testList.add(testBox3);//27
+
+
+        HeuristicSearch hSearch = new HeuristicSearch();
+        Box resultBox = hSearch.melhorCaixa(testList);
+        resultBox = hSearch.melhorCaixa(testList);
+
+
+    }
+
     private static void CasoTesteOtavio() {
 
         Container testContainer = new Container(new Vector3d(10, 10, 10));
@@ -132,7 +155,7 @@ public class Main {
         Container myContainer = reader.getContainer();
         List<Box> lstBoxesOutside = reader.getBoxes();
         List<Box> lstTypeBoxes = reader.getTypeBoxes();
-        int boxTypes = reader.getBoxTypes();
+
 
         try {
             HeuristicSearch hSearch = new HeuristicSearch(lstBoxesOutside, myContainer, lstTypeBoxes);

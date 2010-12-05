@@ -22,6 +22,9 @@ public class HeuristicSearch {
         return container;
     }
 
+    public HeuristicSearch() {
+    }
+
     public HeuristicSearch(List<Box> _boxesOutside, Container _ctn, List<Box> _typeBoxes) {
         boxesOutside = _boxesOutside;
         boxesInside.clear();
@@ -112,14 +115,17 @@ public class HeuristicSearch {
      * Retorna a melhor (maior volume) caixa da lista recebida
      */
     public Box melhorCaixa(List<Box> _lstBoxes) {
-        Box bestBox = new Box(new Vector3d(1, 1, 1), true, true, true,0);
+        if (_lstBoxes.size() > 0) {
+            Box bestBox = new Box(new Vector3d(1, 1, 1), true, true, true, 0);
 
-        for (Box box : _lstBoxes) {
-            if (box.getVolume() > bestBox.getVolume()) {
-                bestBox = box;
+            for (Box box : _lstBoxes) {
+                if (box.getVolume() > bestBox.getVolume()) {
+                    bestBox = box;
+                }
             }
+            return _lstBoxes.remove(_lstBoxes.indexOf(bestBox));
         }
-        return bestBox;
+        return null;
     }
 
     /**
