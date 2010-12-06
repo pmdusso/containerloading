@@ -31,7 +31,18 @@ public class Main {
         //CasoTesteOtavio_2();
         //CasoTesteRotacionaCaixaDaLista();
 
-        ContainerLoading("br5.txt");
+//        ContainerLoading("br1.txt");
+//        ContainerLoading("br2.txt");
+//        ContainerLoading("br3.txt");
+//        ContainerLoading("br4.txt");
+        ContainerLoading("br10.txt");
+//        ContainerLoading("br6.txt");
+//        ContainerLoading("br7.txt");
+//        ContainerLoading("br8.txt");
+//        ContainerLoading("br9.txt");
+        //ContainerLoading("br10.txt");
+
+
     }
 
     private static void Testes() {
@@ -131,7 +142,7 @@ public class Main {
             System.out.println("Total de caixas 1x1x1: " + hSearch.getNumeroDeCaixas(new Vector3d(1, 1, 1)));
             System.out.println("Total de caixas 2x2x2: " + hSearch.getNumeroDeCaixas(new Vector3d(2, 2, 2)));
             System.out.println("Total de caixas 3x3x3: " + hSearch.getNumeroDeCaixas(new Vector3d(3, 3, 3)));
-            DesenhaContainer(hSearch.getContainer());
+            //DesenhaContainer(hSearch.getContainer());
         } catch (Exception e) {
             System.out.println("<CasoTesteOtavio()>" + e.toString());
         }
@@ -177,7 +188,7 @@ public class Main {
     private static void CasoTesteOtavio_2() {
 
         InputReader reader = new InputReader(FilesPathWindows + "br1.txt");
-        reader.readInputBR(50);
+        //reader.readInputBR(50);
 
         Container myContainer = reader.getContainer();
         List<Box> lstBoxesOutside = reader.getBoxes();
@@ -236,6 +247,7 @@ public class Main {
         StringBuilder sb;
 
         System.out.println("Container Volume: " + myContainer.getVolume());
+        System.out.println("Container size: " + myContainer.getX() + " " + myContainer.getY() + " " + myContainer.getZ());
         System.out.println("Nº de caixas na lista: " + lstBoxesOutside.size());
         System.out.println("Nº de tipos de caixas na lista: " + lstTypeBoxes.size());
 
