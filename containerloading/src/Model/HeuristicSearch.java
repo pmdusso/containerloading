@@ -17,7 +17,7 @@ public class HeuristicSearch {
     private List<Box> boxesOutside = new ArrayList<Box>();
     private Container container;
     private BTabu listaTabu;
-    private static int maxIterations = 10000000;
+    private static int maxIterations = 1000000;
 
     ;
 
@@ -51,7 +51,9 @@ public class HeuristicSearch {
                     && boxesOutside.size() > 0 && nroIteracoes <= maxIterations) {
                 //seleciona uma caixa que ainda não está no container seguindo alguma euristica
                 //(nesse caso está sendo a de pegar a melhor caixa == caixa com maior volume.
-                bestBox = melhorCaixaDois(boxesOutside, true);
+                //bestBox = melhorCaixa(boxesOutside);
+                //bestBox = melhorCaixaDois(boxesOutside, true);
+                bestBox = boxesOutside.remove(1);
                 //se aquela caixa não está na lista tabu e ela cabe em algum lugar dentro do container
                 //a solução atual mais essa caixa é um vizinho válido da solução atual.
                 if (!listaTabu.contains(bestBox)) {
@@ -70,7 +72,7 @@ public class HeuristicSearch {
                         //aquele "modelo" de caixa não cabe dentro do container no momento.
                         //Caixa sai da lista de externas e entra na lista tabu
                         tempBox = listaTabu.addBox(bestBox);
-                        System.out.println("### tabuzeando caixa (" + bestBox.relativeDimensions.x + "," + bestBox.relativeDimensions.y + "," + bestBox.relativeDimensions.z + ")");
+                        //System.out.println("### tabuzeando caixa (" + bestBox.relativeDimensions.x + "," + bestBox.relativeDimensions.y + "," + bestBox.relativeDimensions.z + ")");
                         //devolve para a lista de caixas a serem adicionadas aquelas que
                         //nao cabem mais na lista tabu.
                         if (tempBox != null) {
@@ -87,13 +89,13 @@ public class HeuristicSearch {
                         boxesInside = solucaoIntermediaria;
                     } else {
                         nroFoEstabilizada++;
-                        System.out.println(nroFoEstabilizada);
+                        //System.out.println(nroFoEstabilizada);
                         if (nroFoEstabilizada == 5) {
                             nroFoEstabilizada = 0;
-                            double nroAtualCaixas = boxesInside.size() * 0.2;
-                            for (int i = 0; i < nroAtualCaixas; i++) {
-                                boxesOutside.add(boxesInside.remove(i));
-                            }
+                            Box boxToRemove = boxesInside.remove(solucaoIntermediaria.size() - 1);
+                            boxesInside = solucaoIntermediaria;
+                            boxesOutside.add(boxToRemove);
+                            container.removeBox(boxToRemove);
                         }
                     }
                 } else {

@@ -35,7 +35,7 @@ public class BTabu {
                 tabuSize += 2;
             }
         }
-        return tabuSize;
+        return tabuSize-1;
     }
     /**
      * Adiciona uma caixa na lista Tabu.
