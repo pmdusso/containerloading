@@ -1,11 +1,8 @@
 package br.ufrgs.inf.containerloading.grasp;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
-import java.util.Random;
 
 import br.ufrgs.inf.containerloading.entities.Box;
 import br.ufrgs.inf.containerloading.entities.Container;
@@ -75,12 +72,7 @@ public class GraspSolution implements Solution {
 		}
 	    }
 	}
-	Collections.sort(neighbours, new Comparator<Solution>() {
-	    @Override
-	    public int compare(Solution o1, Solution o2) {
-		return o1.getValue().compareTo(o2.getValue());
-	    }
-	});
+	Collections.sort(neighbours);
     }
 
     @Override
