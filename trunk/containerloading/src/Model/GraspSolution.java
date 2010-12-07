@@ -1,8 +1,11 @@
 package Model;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Random;
 
 public class GraspSolution implements Solution {
 
@@ -45,44 +48,38 @@ public class GraspSolution implements Solution {
     }
 
     private void generateNeighbours() {
+	// System.out.println("Gerando vizihnhos -------------------");
+	List<Box> boxesIn = new ArrayList<Box>(boxesInContainer);
+	List<Box> boxesOut = new ArrayList<Box>(boxesOutside);
 	neighbours = new ArrayList<Solution>();
-	for (int i = 0; i < boxesInContainer.size() - 1; i++) {
-	    for (int j = 0; j < boxesOutside.size() - 1; j++) {
-		if (neighbours.size() < 5) {
-		    if (!boxesInContainer.get(i).equals(boxesOutside.get(j))) {
-			List<Box> boxesIn = new ArrayList<Box>(boxesInContainer);
-			List<Box> boxesOut = new ArrayList<Box>(boxesOutside);
+	for (int i = 0; i < boxesIn.size() - 1; i++) {
+	    for (int j = 0; j < boxesOut.size() - 1; j++) {
+		boxesIn = new ArrayList<Box>(boxesInContainer);
+		boxesOut = new ArrayList<Box>(boxesOutside);
+		if (!boxesIn.get(i).equals(boxesOut.get(j))) {
+		    Box boxRemoved = boxesIn.remove(i);
+		    Box boxToBeInserted = boxesOut.remove(j);
 
-			Box boxRemoved = boxesIn.remove(i);
-			Box boxToBeInserted = boxesOut.remove(j);
+		    boxesIn.add(i, boxToBeInserted);
+		    boxesOut.add(j, boxRemoved);
 
-			boxesIn.add(i, boxToBeInserted);
-			boxesOut.add(j, boxRemoved);
+		    GraspSolution newSolution = new GraspSolution(boxesIn, boxesOut, container);
 
-			container.clear();
-			if (isSolutionVaid(boxesIn)) {
-			    neighbours.add(new GraspSolution(boxesIn, boxesOut, container));
+		    if (newSolution.getValue() >= this.getValue() && neighbours.size() < Integer.MAX_VALUE)
+			if (!neighbours.contains(newSolution)) {
+			    neighbours.add(newSolution);
 			}
-		    }
 		}
 	    }
 	}
-    }
+	Collections.sort(neighbours, new Comparator<Solution>() {
+	    @Override
+	    public int compare(Solution o1, Solution o2) {
+		return o1.getValue().compareTo(o2.getValue());
+	    }
+	});
 
-    private Boolean isSolutionVaid(List<Box> solution) {
-
-	Vector3d lastPosition = new Vector3d(0, 0, 0);
-	for (Box box : solution) {
-	    Box fitsIn = container.fitsIn(box, lastPosition);
-	    if (fitsIn == null)
-		return false;
-
-	    container.insertBox(fitsIn);
-	    lastPosition = fitsIn.relativeCoordenates;
-	}
-
-	return true;
-
+	// System.out.println(neighbours.size() + " vizinhos gerados!");
     }
 
     @Override
@@ -93,5 +90,21 @@ public class GraspSolution implements Solution {
     @Override
     public Container getContainer() {
 	return container;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+	if (obj instanceof GraspSolution) {
+	    Solution ob = (Solution) obj;
+	    return ob.getBoxes().equals(this.boxesInContainer);
+	} else
+	    return false;
+    }
+
+    @Override
+    public void addBox(Box boxInContainer) {
+	boxesInContainer.add(boxInContainer);
+	boxesOutside.remove(boxInContainer);
+
     }
 }

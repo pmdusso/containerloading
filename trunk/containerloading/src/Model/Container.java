@@ -72,7 +72,7 @@ public class Container {
 		}
 	    }
 	} catch (Exception ex) {
-	    System.out.println("<BottomOverlap>" + ex.toString());
+	    // System.out.println("<BottomOverlap>" + ex.toString());
 	}
 
 	return false;
@@ -113,7 +113,8 @@ public class Container {
 		}
 	    }
 	} catch (Exception ex) {
-	    System.out.println("\n/*FallBox()\n *EXCEPTION:: " + ex.toString() + "\n */");
+	    // System.out.println("\n/*FallBox()\n *EXCEPTION:: " +
+	    // ex.toString() + "\n */");
 	}
 
 	return pos;
@@ -182,7 +183,8 @@ public class Container {
 	    }
 
 	} catch (Exception ex) {
-	    System.out.println("\n/*fitsHere()\n *EXCEPTION:: " + ex.toString() + "\n */");
+	    // System.out.println("\n/*fitsHere()\n *EXCEPTION:: " +
+	    // ex.toString() + "\n */");
 	}
 	return true;
     }
@@ -222,18 +224,25 @@ public class Container {
 			// Se a caixa cabe naquela posicao, atualiza as
 			// coordenadas
 			// relativas ao container da caixa e retorna ela.
-			if (fitsHere(_box, new Vector3d(k, j, i))) {
-			    _box.relativeCoordenates = new Vector3d(k, j, i);
-			    return _box;
+			if (!this.spMatrix[k][j][i]) {
+			    if (fitsHere(_box, new Vector3d(k, j, i))) {
+				_box.relativeCoordenates = new Vector3d(k, j, i);
+				return _box;
+			    }
 			}
 		    }
 		}
 	    }
 
 	} catch (Exception e) {
-	    System.out.println("\n/*fitsIn()\n *EXCEPTION:: " + e.toString() + "\n */");
+	    // System.out.println("\n/*fitsIn()\n *EXCEPTION:: " + e.toString()
+	    // + "\n */");
 	}
 	return null;
+    }
+
+    public Box fitsIn(Box _box) {
+	return fitsIn(_box, new Vector3d(0, 0, 0));
     }
 
     /**
@@ -248,14 +257,16 @@ public class Container {
 			if (!this.spMatrix[i][j][k]) {
 			    this.spMatrix[i][j][k] = true;
 			} else {
-			    System.out.println("Posicao: (" + i + "," + j + "," + k + ") previamente ocupada.");
+			    // System.out.println("Posicao: (" + i + "," + j +
+			    // "," + k + ") previamente ocupada.");
 			    return false;
 			}
 		    }
 		}
 	    }
 	} catch (Exception e) {
-	    System.out.println("\n/*InsertBox()\n *EXCEPTION:: " + e.toString() + "\n */");
+	    // System.out.println("\n/*InsertBox()\n *EXCEPTION:: " +
+	    // e.toString() + "\n */");
 	    return false;
 	}
 	return true;
@@ -273,27 +284,22 @@ public class Container {
 			if (this.spMatrix[i][j][k]) {
 			    this.spMatrix[i][j][k] = false;
 			} else {
-			    System.out.println("Posicao: (" + i + "," + j + "," + k + ") previamente ocupada.");
+			    // System.out.println("Posicao: (" + i + "," + j +
+			    // "," + k + ") previamente ocupada.");
 			    return false;
 			}
 		    }
 		}
 	    }
 	} catch (Exception e) {
-	    System.out.println("\n/*removeBox()\n *EXCEPTION:: " + e.toString() + "\n */");
+	    // System.out.println("\n/*removeBox()\n *EXCEPTION:: " +
+	    // e.toString() + "\n */");
 	    return false;
 	}
 	return true;
     }
 
     public void clear() {
-	for (int i = 0; i < this.x; i++) {
-	    for (int j = 0; j < this.y; j++) {
-		for (int k = 0; k < this.z; k++) {
-		    spMatrix[i][j][k] = false;
-		}
-	    }
-	}
-
+	spMatrix = new boolean[x][y][z];
     }
 }

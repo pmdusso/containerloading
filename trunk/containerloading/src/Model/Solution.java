@@ -12,4 +12,6 @@ public interface Solution {
 
     public Container getContainer();
 
+    public void addBox(Box boxInContainer);
+
 }
