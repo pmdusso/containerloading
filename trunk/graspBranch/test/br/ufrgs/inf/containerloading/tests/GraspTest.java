@@ -1,3 +1,5 @@
+package br.ufrgs.inf.containerloading.tests;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
