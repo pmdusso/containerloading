@@ -1,4 +1,4 @@
-package Model;
+package br.ufrgs.inf.containerloading.grasp;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -6,6 +6,10 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
+
+import br.ufrgs.inf.containerloading.entities.Box;
+import br.ufrgs.inf.containerloading.entities.Container;
+import br.ufrgs.inf.containerloading.entities.Solution;
 
 public class GraspSolution implements Solution {
 
@@ -48,7 +52,6 @@ public class GraspSolution implements Solution {
     }
 
     private void generateNeighbours() {
-	// System.out.println("Gerando vizihnhos -------------------");
 	List<Box> boxesIn = new ArrayList<Box>(boxesInContainer);
 	List<Box> boxesOut = new ArrayList<Box>(boxesOutside);
 	neighbours = new ArrayList<Solution>();
@@ -65,7 +68,7 @@ public class GraspSolution implements Solution {
 
 		    GraspSolution newSolution = new GraspSolution(boxesIn, boxesOut, container);
 
-		    if (newSolution.getValue() >= this.getValue() && neighbours.size() < Integer.MAX_VALUE)
+		    if (newSolution.getValue() >= this.getValue() && neighbours.size() < GraspParameters.MAX_NEIGHBOURS_NUMBER)
 			if (!neighbours.contains(newSolution)) {
 			    neighbours.add(newSolution);
 			}
@@ -78,8 +81,6 @@ public class GraspSolution implements Solution {
 		return o1.getValue().compareTo(o2.getValue());
 	    }
 	});
-
-	// System.out.println(neighbours.size() + " vizinhos gerados!");
     }
 
     @Override
@@ -106,5 +107,10 @@ public class GraspSolution implements Solution {
 	boxesInContainer.add(boxInContainer);
 	boxesOutside.remove(boxInContainer);
 
+    }
+
+    @Override
+    public int compareTo(Solution o) {
+	return this.getValue().compareTo(o.getValue());
     }
 }

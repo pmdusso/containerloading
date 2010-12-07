@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates and open the template in
  * the editor.
  */
-package Model;
+package br.ufrgs.inf.containerloading.entities;
 
 /**
  * 
@@ -38,10 +38,10 @@ public class Container {
     private static final Integer Z = 2;
 
     public Container(Vector3d _size) {
-	this.x = _size.x;
-	this.y = _size.y;
-	this.z = _size.z;
-	this.volume = (_size.x * _size.y * _size.z);
+	this.x = _size.getX();
+	this.y = _size.getY();
+	this.z = _size.getZ();
+	this.volume = (_size.getX() * _size.getY() * _size.getZ());
 	spMatrix = new boolean[x][y][z];
 	// inicializa toda a matriz do container com 0 (container vazio)
 	for (int i = 0; i < this.x; i++) {
@@ -56,17 +56,17 @@ public class Container {
     // Checks if the bottom of a box hits something
 
     private boolean BottomOverlap(int x, int y, Vector3d _pos) {
-	int xMax = _pos.x + x;
-	int yMax = _pos.y + y;
+	int xMax = _pos.getX() + x;
+	int yMax = _pos.getY() + y;
 
 	try {
 	    if (xMax > this.x || yMax > this.y) {
 		throw new Exception("bottomOverlap(int x, int y, Vector3d _pos) - Porra, saiu fora do container!");
 	    }
 
-	    for (int i = _pos.x; i < xMax; i++) {
-		for (int j = _pos.y; j < yMax; j++) {
-		    if (this.spMatrix[i][j][_pos.z]) {
+	    for (int i = _pos.getX(); i < xMax; i++) {
+		for (int j = _pos.getY(); j < yMax; j++) {
+		    if (this.spMatrix[i][j][_pos.getZ()]) {
 			return true;
 		    }
 		}
@@ -86,29 +86,29 @@ public class Container {
     public Vector3d FallBox(Box bx, Vector3d _pos) {
 	Vector3d pos = _pos;
 	try {
-	    if (pos.z < 0) {
+	    if (pos.getZ() < 0) {
 		throw new Exception("FallBox(Box bx, Vector3d _pos) - Porra, saiu fora do container!");
 	    }
-	    int upperRef = pos.z;
+	    int upperRef = pos.getZ();
 	    int currentRef = upperRef;
 	    int lowerRef = 0;
 
 	    while (true) {
-		if (BottomOverlap(bx.relativeDimensions.x, bx.relativeDimensions.y, pos)) {
-		    lowerRef = pos.z;
+		if (BottomOverlap(bx.getRelativeDimensions().getX(), bx.getRelativeDimensions().getY(), pos)) {
+		    lowerRef = pos.getZ();
 		    currentRef = (lowerRef + upperRef) / 2;
-		    pos.z = currentRef;
+		    pos.setZ(currentRef);
 		} else {
-		    upperRef = pos.z;
+		    upperRef = pos.getZ();
 		    currentRef = (lowerRef + upperRef) / 2;
-		    pos.z = currentRef;
+		    pos.setZ(currentRef);
 		}
 
 		if (upperRef - lowerRef == 1) {
-		    pos.z++;
+		    pos.setZ(pos.getZ() + 1);
 		    break;
 		} else if (upperRef == lowerRef) {
-		    pos.z++;
+		    pos.setZ(pos.getZ() + 1);
 		    break;
 		}
 	    }
@@ -122,7 +122,7 @@ public class Container {
 
     public Vector3d getPosition(Box bx) {
 	// min(x,y), max(z)
-	Vector3d pos = new Vector3d(0, 0, this.z - bx.relativeDimensions.z);
+	Vector3d pos = new Vector3d(0, 0, this.z - bx.getRelativeDimensions().getZ());
 
 	/*
 	 * TODO
@@ -150,17 +150,17 @@ public class Container {
 	    // Removido o "igual" do teste, deixando apenas o "maior"
 	    // pois pode haver casos como container {10,10,10} e caixa
 	    // {10,10,10} (caixa justa no container)
-	    if ((pos.x + bx.relativeDimensions.x) > this.x) {
+	    if ((pos.getX() + bx.getRelativeDimensions().getX()) > this.x) {
 		return false;
 		// throw new
 		// Exception("fitsHere(Box bx, Vector3d _pos) - A caixa saiu fora do container pelo vetor X!");
 	    }
-	    if ((pos.y + bx.relativeDimensions.y) > this.y) {
+	    if ((pos.getY() + bx.getRelativeDimensions().getY()) > this.y) {
 		return false;
 		// throw new
 		// Exception("fitsHere(Box bx, Vector3d _pos) - A caixa saiu fora do container pelo vetor Y");
 	    }
-	    if ((pos.z + bx.relativeDimensions.z) > this.z) {
+	    if ((pos.getZ() + bx.getRelativeDimensions().getZ()) > this.z) {
 		return false;
 		// throw new
 		// Exception("fitsHere(Box bx, Vector3d _pos) - A caixa saiu fora do container pelo vetor Z");
@@ -172,9 +172,9 @@ public class Container {
 	     */
 
 	    // Brute force check
-	    for (int i = pos.x; i < pos.x + bx.relativeDimensions.x; i++) {
-		for (int j = pos.y; j < pos.y + bx.relativeDimensions.y; j++) {
-		    for (int k = pos.z; k < pos.z + bx.relativeDimensions.z; k++) {
+	    for (int i = pos.getX(); i < pos.getX() + bx.getRelativeDimensions().getX(); i++) {
+		for (int j = pos.getY(); j < pos.getY() + bx.getRelativeDimensions().getY(); j++) {
+		    for (int k = pos.getZ(); k < pos.getZ() + bx.getRelativeDimensions().getZ(); k++) {
 			if (this.spMatrix[i][j][k]) {
 			    return false;
 			}
@@ -201,32 +201,32 @@ public class Container {
 	// Se a distancia entre a ultima caixa colocada e a parede do container
 	// nao for
 	// suficiente para a proxima caixa...
-	if ((lastBoxInserted.x == this.x) || ((this.x - lastBoxInserted.x) < _box.relativeDimensions.x)) {
+	if ((lastBoxInserted.getX() == this.x) || ((this.x - lastBoxInserted.getX()) < _box.getRelativeDimensions().getX())) {
 
-	    lastBoxInserted = new Vector3d(0, lastBoxInserted.y + _box.relativeDimensions.y, lastBoxInserted.z);
+	    lastBoxInserted = new Vector3d(0, lastBoxInserted.getY() + _box.getRelativeDimensions().getY(), lastBoxInserted.getZ());
 	}
 	// Se a ultima caixa colocada "encheu" o eixo Y, passa para a linha de
 	// cima. OR
 	// Se a distancia entre a ultima caixa colocada e a parede do container
 	// nao for
 	// suficiente para a proxima caixa...
-	if ((lastBoxInserted.y == this.y) || ((this.y - lastBoxInserted.y) < _box.relativeDimensions.y)) {
+	if ((lastBoxInserted.getY() == this.y) || ((this.y - lastBoxInserted.getY()) < _box.getRelativeDimensions().getY())) {
 	    lastBoxInserted = new Vector3d(0, // volta para o começo do
 					      // container
-		    0, lastBoxInserted.z + _box.relativeDimensions.z);
+		    0, lastBoxInserted.getZ() + _box.getRelativeDimensions().getZ());
 	}
 	try {
 
 	    // Varre shuazenegeriamente procurando um lugar pra colocar a caixa.
-	    for (int i = lastBoxInserted.z; i < this.z; i++) {
-		for (int j = lastBoxInserted.y; j < this.y; j++) {
-		    for (int k = lastBoxInserted.x; k < this.x; k++) {
+	    for (int i = lastBoxInserted.getZ(); i < this.z; i++) {
+		for (int j = lastBoxInserted.getY(); j < this.y; j++) {
+		    for (int k = lastBoxInserted.getX(); k < this.x; k++) {
 			// Se a caixa cabe naquela posicao, atualiza as
 			// coordenadas
 			// relativas ao container da caixa e retorna ela.
 			if (!this.spMatrix[k][j][i]) {
 			    if (fitsHere(_box, new Vector3d(k, j, i))) {
-				_box.relativeCoordenates = new Vector3d(k, j, i);
+				_box.setRelativeCoordenates(new Vector3d(k, j, i));
 				return _box;
 			    }
 			}
@@ -251,9 +251,9 @@ public class Container {
      */
     public boolean insertBox(Box bx) {
 	try {
-	    for (int i = bx.relativeCoordenates.x; i < bx.relativeCoordenates.x + bx.relativeDimensions.x; i++) {
-		for (int j = bx.relativeCoordenates.y; j < bx.relativeCoordenates.y + bx.relativeDimensions.y; j++) {
-		    for (int k = bx.relativeCoordenates.z; k < bx.relativeCoordenates.z + bx.relativeDimensions.z; k++) {
+	    for (int i = bx.getRelativeCoordenates().getX(); i < bx.getRelativeCoordenates().getX() + bx.getRelativeDimensions().getX(); i++) {
+		for (int j = bx.getRelativeCoordenates().getY(); j < bx.getRelativeCoordenates().getY() + bx.getRelativeDimensions().getY(); j++) {
+		    for (int k = bx.getRelativeCoordenates().getZ(); k < bx.getRelativeCoordenates().getZ() + bx.getRelativeDimensions().getZ(); k++) {
 			if (!this.spMatrix[i][j][k]) {
 			    this.spMatrix[i][j][k] = true;
 			} else {
@@ -278,9 +278,9 @@ public class Container {
      */
     public boolean removeBox(Box bx) {
 	try {
-	    for (int i = bx.relativeCoordenates.x; i < bx.relativeCoordenates.x + bx.relativeDimensions.x; i++) {
-		for (int j = bx.relativeCoordenates.y; j < bx.relativeCoordenates.y + bx.relativeDimensions.y; j++) {
-		    for (int k = bx.relativeCoordenates.z; k < bx.relativeCoordenates.z + bx.relativeDimensions.z; k++) {
+	    for (int i = bx.getRelativeCoordenates().getX(); i < bx.getRelativeCoordenates().getX() + bx.getRelativeDimensions().getX(); i++) {
+		for (int j = bx.getRelativeCoordenates().getY(); j < bx.getRelativeCoordenates().getY() + bx.getRelativeDimensions().getY(); j++) {
+		    for (int k = bx.getRelativeCoordenates().getZ(); k < bx.getRelativeCoordenates().getZ() + bx.getRelativeDimensions().getZ(); k++) {
 			if (this.spMatrix[i][j][k]) {
 			    this.spMatrix[i][j][k] = false;
 			} else {
