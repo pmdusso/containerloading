@@ -2,7 +2,6 @@ package br.ufrgs.inf.containerloading.grasp;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 
@@ -44,8 +43,6 @@ public class GRASP {
 
 		Solution localMaximum = localSearch(initalSolution);
 
-		// System.out.println(String.format("GRASP: Melhor:%s Atual:%s",
-		// solution.getValue(), localMaximum.getValue()));
 		if (localMaximum.getValue() > solution.getValue())
 		    solution = localMaximum;
 	    }
@@ -54,7 +51,6 @@ public class GRASP {
     }
 
     private Boolean isSolutionValid(List<Box> boxes, Container container) {
-	// System.out.println("isValidCalled -------------------");
 	container.clear();
 	Vector3d lastPosition = new Vector3d(0, 0, 0);
 	for (Box box : boxes) {
