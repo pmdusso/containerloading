@@ -1,8 +1,8 @@
-package Model;
+package br.ufrgs.inf.containerloading.entities;
 
 import java.util.List;
 
-public interface Solution {
+public interface Solution extends Comparable<Solution> {
 
     public List<Solution> getNeighbours();
 

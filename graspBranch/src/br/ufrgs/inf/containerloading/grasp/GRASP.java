@@ -1,4 +1,4 @@
-package Model;
+package br.ufrgs.inf.containerloading.grasp;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -6,22 +6,24 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 
+import br.ufrgs.inf.containerloading.entities.Box;
+import br.ufrgs.inf.containerloading.entities.Container;
+import br.ufrgs.inf.containerloading.entities.Solution;
+import br.ufrgs.inf.containerloading.entities.Vector3d;
+
 /**
  * 
  * @author Matheus Abegg
  */
 public class GRASP {
 
-    public static final int MAX = 10;
-
     private List<Box> boxes;
     private Container container;
 
     private Random randomizer;
-
     private Float alpha;
 
-    public GRASP(Container container, List<Box> boxes, Integer boxTypes, Long seed, Float alpha) {
+    public GRASP(Container container, List<Box> boxes, Integer boxTypes, Long seed) {
 	this.container = container;
 	this.boxes = boxes;
 	this.randomizer = new Random(seed);
@@ -35,9 +37,8 @@ public class GRASP {
     public Solution solve() {
 	Solution solution = new GraspSolution(container);
 
-	for (int i = 0; i < MAX; i++) {
+	for (int i = 0; i < GraspParameters.NUMBER_OS_STARTS; i++) {
 	    if (solution.getValue() != container.getVolume()) {
-		// System.out.println("Itreação corrente do grasp = " + i);
 		container.clear();
 		Solution initalSolution = greedyRandomized(alpha);
 
@@ -52,7 +53,7 @@ public class GRASP {
 	return solution;
     }
 
-    public static Boolean isSolutionValid(List<Box> boxes, Container container) {
+    private Boolean isSolutionValid(List<Box> boxes, Container container) {
 	// System.out.println("isValidCalled -------------------");
 	container.clear();
 	Vector3d lastPosition = new Vector3d(0, 0, 0);
@@ -62,7 +63,7 @@ public class GRASP {
 		return false;
 
 	    container.insertBox(fitsIn);
-	    lastPosition = fitsIn.relativeCoordenates;
+	    lastPosition = fitsIn.getRelativeCoordenates();
 	}
 
 	return true;
@@ -70,14 +71,12 @@ public class GRASP {
 
     private Solution localSearch(Solution solution) {
 	Solution bestSolution = solution;
-	boolean hasChanged = true;
+	Boolean hasChanged = true;
 	while (hasChanged) {
 	    hasChanged = false;
 	    List<Solution> neighbours = bestSolution.getNeighbours();
 	    for (Solution neighbour : neighbours) {
-		// System.out.println(String.format("LocaSearch: Melhor:%s Atual:%s",
-		// bestSolution.getValue(), neighbour.getValue()));
-		if (neighbour.getValue() > bestSolution.getValue() && GRASP.isSolutionValid(new ArrayList<Box>(neighbour.getBoxes()), this.container)) {
+		if (neighbour.getValue() > bestSolution.getValue() && isSolutionValid(new ArrayList<Box>(neighbour.getBoxes()), this.container)) {
 		    bestSolution = neighbour;
 		    hasChanged = true;
 		}
@@ -88,7 +87,6 @@ public class GRASP {
     }
 
     private Solution greedyRandomized(Float alpha) {
-	// System.out.println("Gerando Greedy");
 	Solution solution = new GraspSolution(new ArrayList<Box>(), new ArrayList<Box>(boxes), container);
 	List<Box> iteratableBoxList = new ArrayList<Box>(boxes);
 	Vector3d lastBoxInserted = new Vector3d(0, 0, 0);
@@ -102,7 +100,7 @@ public class GRASP {
 		if (boxInContainer != null) {
 		    solution.addBox(boxInContainer);
 		    container.insertBox(boxInContainer);
-		    lastBoxInserted = boxInContainer.relativeCoordenates;
+		    lastBoxInserted = boxInContainer.getRelativeCoordenates();
 		    previousCandidate = null;
 		} else {
 		    previousCandidate = candidateBox;
@@ -111,12 +109,11 @@ public class GRASP {
 
 	    iteratableBoxList.remove(candidateBox);
 	}
-	// System.out.println("GreedyGerado");
 	return solution;
     }
 
     private List<Box> getCadidatesList(List<Box> boxes, Float alpha) {
-	Collections.sort(boxes, boxComparator);
+	Collections.sort(boxes);
 	Integer limit = (int) Math.floor(boxes.size() * alpha);
 
 	if (limit > 0) {
@@ -127,11 +124,4 @@ public class GRASP {
 	} else
 	    return boxes;
     }
-
-    private Comparator<Box> boxComparator = new Comparator<Box>() {
-	@Override
-	public int compare(Box o1, Box o2) {
-	    return o1.getVolume().compareTo(o2.getVolume());
-	}
-    };
 }
