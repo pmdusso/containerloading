@@ -17,8 +17,8 @@ public class HeuristicSearch {
     private List<Box> boxesOutside = new ArrayList<Box>();
     private Container container;
     private BTabu listaTabu;
-    private static int maxIterations = 1000000;
-
+    private static int maxIterations = 500000;
+    private int numBoxes;
     ;
 
     public Container getContainer() {
@@ -30,6 +30,7 @@ public class HeuristicSearch {
 
     public HeuristicSearch(List<Box> _boxesOutside, Container _ctn, List<Box> _typeBoxes) {
         boxesOutside = _boxesOutside;
+        numBoxes = _boxesOutside.size();
         boxesInside.clear();
         listaTabu = new BTabu(_typeBoxes);
         container = _ctn;
@@ -52,12 +53,15 @@ public class HeuristicSearch {
                 //seleciona uma caixa que ainda não está no container seguindo alguma euristica
                 //(nesse caso está sendo a de pegar a melhor caixa == caixa com maior volume.
                 //bestBox = melhorCaixa(boxesOutside);
-                //bestBox = melhorCaixaDois(boxesOutside, true);
-                bestBox = boxesOutside.remove(1);
+                bestBox = melhorCaixaDois(boxesOutside, true);                
+                //bestBox = melhorCaixaDois(boxesOutside, true); 
+                //bestBox = boxesOutside.remove(0);
+
                 //se aquela caixa não está na lista tabu e ela cabe em algum lugar dentro do container
                 //a solução atual mais essa caixa é um vizinho válido da solução atual.
                 if (!listaTabu.contains(bestBox)) {
                     tempBox = container.fitsIn(bestBox, lastBoxInserted);
+
                     if (tempBox != null) {
                         //"otimizada": salva as coordenadas da ultima caixa inserida. Começa a busca
                         //por um lugar para as proximas caixas apartir dessa posicao.
@@ -67,7 +71,12 @@ public class HeuristicSearch {
                                 tempBox.relativeCoordenates.z);
                         //Caixa sai da lista de externas e entra na lista de internas
                         solucaoIntermediaria.add(tempBox);
-                        container.insertBox(tempBox);
+                        boolean res = container.insertBox(tempBox);
+                        if (!res)
+                            {
+                                System.out.println("#####Haaaaaaa!!!!!!!!!!!!!");
+                            }
+
                     } else {
                         //aquele "modelo" de caixa não cabe dentro do container no momento.
                         //Caixa sai da lista de externas e entra na lista tabu
@@ -78,10 +87,7 @@ public class HeuristicSearch {
                         if (tempBox != null) {
                             //Caixa sai da lista tabu e entra na lista de externas
                             boxesOutside.add(tempBox);
-                        }
-                        //if (solucaoIntermediaria.size() > 0) {
-                        //solucaoIntermediaria.remove(solucaoIntermediaria.size() - 1);
-                        //}
+                        }                        
                     }
                     int fo = funcaoObjetivo(solucaoIntermediaria);
                     if (fo > valorFuncaoObjetivo) {
@@ -92,6 +98,8 @@ public class HeuristicSearch {
                         //System.out.println(nroFoEstabilizada);
                         if (nroFoEstabilizada == 5) {
                             nroFoEstabilizada = 0;
+                            /*if(solucaoIntermediaria.isEmpty())
+                            {System.out.println("##################################111111");}*/
                             Box boxToRemove = boxesInside.remove(solucaoIntermediaria.size() - 1);
                             boxesInside = solucaoIntermediaria;
                             boxesOutside.add(boxToRemove);
@@ -114,6 +122,7 @@ public class HeuristicSearch {
                      * disposição.
                      */
                     if ((bestBox.sides.x != bestBox.sides.y) || (bestBox.sides.x != bestBox.sides.z)) {
+
                         bestBox.rotate();
                         boxesOutside.add(bestBox);
                     }
@@ -126,6 +135,7 @@ public class HeuristicSearch {
                     System.out.println(nroIteracoes);
 
                 }
+                
             }
 
         } catch (Exception e) {
@@ -154,22 +164,33 @@ public class HeuristicSearch {
     public Box melhorCaixa(List<Box> _lstBoxes) {
         //Inicializa o bestbox como nulo
         Box ret = null;
-        if (_lstBoxes.size() > 0) {
-            //pega a primeira caixa da lista (pode ser tabu tb, mais isso será tratado mais abaixo) ***
-            Box bestBox = _lstBoxes.get(0);
-            //Vai percorrendo a lista e, se achar uma caixa maior que a atual que não esteja na lista tabu,
-            //passa a utilizar esta nova caixa
-            for (Box box : _lstBoxes) {
-                if (box.getVolume() > bestBox.getVolume() && !listaTabu.contains(box)) {
-                    bestBox = box;
+        try {
+            if (_lstBoxes.size() > 0) {
+                //pega a primeira caixa da lista (pode ser tabu tb, mais isso será tratado mais abaixo) ***
+                Box bestBox = _lstBoxes.get(0);
+                //Vai percorrendo a lista e, se achar uma caixa maior que a atual que não esteja na lista tabu,
+                //passa a utilizar esta nova caixa
+                for (Box box : _lstBoxes) {
+                    if (box.getVolume() > bestBox.getVolume() && !listaTabu.contains(box)) {
+                        bestBox = box;
+                    }
+                }
+                //***No primeiro comando deste método, existe a possibilidade de se pegar uma caixa que é tabu.
+                //Se este for o caso, o IF abixo impede que uma caixa tabu seja retornada.
+                if (!listaTabu.contains(bestBox)) {
+                    ret = _lstBoxes.remove(_lstBoxes.indexOf(bestBox));
                 }
             }
-            //***No primeiro comando deste método, existe a possibilidade de se pegar uma caixa que é tabu.
-            //Se este for o caso, o IF abixo impede que uma caixa tabu seja retornada.
-            if (!listaTabu.contains(bestBox)) {
-                ret = _lstBoxes.remove(_lstBoxes.indexOf(bestBox));
+            else
+            {
+                System.out.println("melhorCaixa>. -lstBoxes == 0" );
             }
         }
+        catch(Exception ex)
+        {
+            System.out.println("melhorCaixa" + ex.toString());
+        }
+        
         return ret;
     }
 
