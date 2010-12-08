@@ -36,16 +36,22 @@ public class GRASP {
     public Solution solve() {
 	Solution solution = new GraspSolution(container);
 
+	Solution localMaximum = null;
 	for (int i = 0; i < GraspParameters.NUMBER_OS_STARTS; i++) {
+	    System.out.println("Iniciando loop " + i);
 	    if (solution.getValue() != container.getVolume()) {
 		container.clear();
 		Solution initalSolution = greedyRandomized(alpha);
 
-		Solution localMaximum = localSearch(initalSolution);
+		localMaximum = localSearch(initalSolution);
 
 		if (localMaximum.getValue() > solution.getValue())
 		    solution = localMaximum;
 	    }
+	    System.out.println("Fim do loop " + i);
+	    System.out.println("Solução corrente = " + (float) ((float) localMaximum.getValue() / (float) container.getVolume()));
+	    System.out.println("Melhor = " + (float) ((float) solution.getValue() / (float) container.getVolume()));
+
 	}
 	return solution;
     }
@@ -54,7 +60,11 @@ public class GRASP {
 	container.clear();
 	Vector3d lastPosition = new Vector3d(0, 0, 0);
 	for (Box box : boxes) {
-	    Box fitsIn = container.fitsIn(box, lastPosition);
+	    Box fitsIn = null;
+	    if (GraspParameters.FULL_SEARCH)
+		fitsIn = container.fitsIn(box);
+	    else
+		fitsIn = container.fitsIn(box, lastPosition);
 	    if (fitsIn == null)
 		return false;
 
@@ -92,7 +102,11 @@ public class GRASP {
 	    List<Box> candidates = getCadidatesList(iteratableBoxList, alpha);
 	    Box candidateBox = candidates.get(0);
 	    if (!candidateBox.equals(previousCandidate)) {
-		Box boxInContainer = container.fitsIn(candidateBox, lastBoxInserted);
+		Box boxInContainer = null;
+		if (GraspParameters.FULL_SEARCH)
+		    boxInContainer = container.fitsIn(candidateBox);
+		else
+		    boxInContainer = container.fitsIn(candidateBox, lastBoxInserted);
 		if (boxInContainer != null) {
 		    solution.addBox(boxInContainer);
 		    container.insertBox(boxInContainer);
