@@ -1,12 +1,12 @@
-package br.ufrgs.inf.containerloading.grasp;
+package br.com.mpabegg.containerloading.grasp;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import br.ufrgs.inf.containerloading.entities.Box;
-import br.ufrgs.inf.containerloading.entities.Container;
-import br.ufrgs.inf.containerloading.entities.Solution;
+import br.com.mpabegg.containerloading.entities.Box;
+import br.com.mpabegg.containerloading.entities.Container;
+import br.com.mpabegg.containerloading.entities.Solution;
 
 public class GraspSolution implements Solution {
 
