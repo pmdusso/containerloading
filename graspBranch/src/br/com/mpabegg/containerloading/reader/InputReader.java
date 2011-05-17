@@ -46,8 +46,7 @@ public class InputReader {
 		String containerData = reader.readLine().trim();
 		String[] containerDataArray = containerData.split(" ");
 
-		Integer conatinerWidth = (int) Math.ceil(Integer
-				.parseInt(containerDataArray[0]) / 10);
+		Integer conatinerWidth = (int) Math.ceil(Integer.parseInt(containerDataArray[0]) / 10);
 		Integer conatinerlength = (int) Math.ceil(Integer
 				.parseInt(containerDataArray[1]) / 10);
 		Integer conatinerHeight = (int) Math.ceil(Integer

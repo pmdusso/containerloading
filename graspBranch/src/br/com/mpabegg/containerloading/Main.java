@@ -13,7 +13,7 @@ public class Main {
     private static final String START_TIME = "Hora de inicio: %s";
     private static final String END_TIME = "Hora de fim: %s";
     private static final String TOTAL_TIME = "Tempo gasto (hh:mm:ss): %s";
-    private static final String SOLUTION_VALUE = "Razao = %s";
+    private static final String SOLUTION_VALUE = "Razão = %s";
 
     public static void main(String[] args) {
 	InputReader reader = null;
