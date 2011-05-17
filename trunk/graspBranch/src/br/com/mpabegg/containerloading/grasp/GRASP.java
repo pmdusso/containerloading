@@ -35,6 +35,7 @@ public class GRASP {
 
     public Solution solve() {
 	Solution solution = new GraspSolution(container);
+	System.out.println("Grau de randomicidade = " + (float) alpha * 100 + "%");
 
 	Solution localMaximum = null;
 	for (int i = 0; i < GraspParameters.NUMBER_OS_STARTS; i++) {
@@ -49,7 +50,7 @@ public class GRASP {
 		    solution = localMaximum;
 	    }
 	    System.out.println("Fim do loop " + i);
-	    System.out.println("Solu��o corrente = " + (float) ((float) localMaximum.getValue() / (float) container.getVolume()));
+	    System.out.println("Solução corrente = " + (float) ((float) localMaximum.getValue() / (float) container.getVolume()));
 	    System.out.println("Melhor = " + (float) ((float) solution.getValue() / (float) container.getVolume()));
 
 	}
