@@ -1,14 +1,14 @@
-package br.ufrgs.inf.containerloading.grasp;
+package br.com.mpabegg.containerloading.grasp;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-import br.ufrgs.inf.containerloading.entities.Box;
-import br.ufrgs.inf.containerloading.entities.Container;
-import br.ufrgs.inf.containerloading.entities.Solution;
-import br.ufrgs.inf.containerloading.entities.Vector3d;
+import br.com.mpabegg.containerloading.entities.Box;
+import br.com.mpabegg.containerloading.entities.Container;
+import br.com.mpabegg.containerloading.entities.Solution;
+import br.com.mpabegg.containerloading.entities.Vector3d;
 
 /**
  * 
@@ -49,7 +49,7 @@ public class GRASP {
 		    solution = localMaximum;
 	    }
 	    System.out.println("Fim do loop " + i);
-	    System.out.println("Solução corrente = " + (float) ((float) localMaximum.getValue() / (float) container.getVolume()));
+	    System.out.println("Soluï¿½ï¿½o corrente = " + (float) ((float) localMaximum.getValue() / (float) container.getVolume()));
 	    System.out.println("Melhor = " + (float) ((float) solution.getValue() / (float) container.getVolume()));
 
 	}

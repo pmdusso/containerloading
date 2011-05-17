@@ -1,4 +1,4 @@
-package br.ufrgs.inf.containerloading.entities;
+package br.com.mpabegg.containerloading.entities;
 
 public class Vector3d {
 

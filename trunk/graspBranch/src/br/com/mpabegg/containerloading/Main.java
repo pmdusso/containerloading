@@ -1,11 +1,11 @@
-package br.ufrgs.inf.containerloading;
+package br.com.mpabegg.containerloading;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import br.ufrgs.inf.containerloading.entities.Solution;
-import br.ufrgs.inf.containerloading.grasp.GRASP;
-import br.ufrgs.inf.containerloading.reader.InputReader;
+import br.com.mpabegg.containerloading.entities.Solution;
+import br.com.mpabegg.containerloading.grasp.GRASP;
+import br.com.mpabegg.containerloading.reader.InputReader;
 
 public class Main {
 
